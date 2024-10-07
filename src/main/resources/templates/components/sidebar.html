@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sidebar</title>
+    </head>
+    <body>
+        <div class="prd1-cont d-none d-lg-flex col-lg-3" th:fragment="product-list-sidebar">
+            <div class="row w-100 custom-padding-left">
+                <div class="sidebar col-sm-12 col-md-3 col-lg-3 prd1-left hidden-xs hidden-sm" th:fragment="sidebar">
+                    <div class="row left-type">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" data-id="men,women">
+                                <a
+                                    href="#all"
+                                    role="tab"
+                                    data-toggle="tab"
+                                    data-gender="1"
+                                    th:class="${filterGender == 1} ? 'active-gender'"
+                                    >TẤT CẢ</a
+                                >
+                            </li>
+                            <li role="presentation" class="type-divider"></li>
+                            <li role="presentation" data-id="men" class="">
+                                <a
+                                    href="#men"
+                                    role="tab"
+                                    data-toggle="tab"
+                                    data-gender="2"
+                                    th:class="${filterGender == 2} ? 'active-gender'"
+                                    >NAM</a
+                                >
+                            </li>
+                            <li role="presentation" class="type-divider"></li>
+                            <li data-id="women" role="presentation" class="">
+                                <a
+                                    href="#women"
+                                    role="tab"
+                                    data-toggle="tab"
+                                    data-gender="3"
+                                    th:class="${filterGender == 3} ? 'active-gender'"
+                                    >NỮ</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row left-divider"></div>
+                    <div class="row left-tree">
+                        <ul class="nav">
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    KIỂU DÁNG <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree" th:each="style : ${styles}">
+                                    <li>
+                                        <label th:class="${#strings.contains(filterStyles, style.id)} ? 'active'">
+                                            <input
+                                                name="cbStyle"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${style.id}"
+                                                hidden=""
+                                            />
+                                            <span th:text="${style.value}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    DÒNG SẢN PHẨM <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree" th:each="category : ${categories}">
+                                    <li>
+                                        <label
+                                            th:class="${#strings.contains(filterCategories, category.id)} ? 'active'"
+                                        >
+                                            <input
+                                                name="cbCategory"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${category.id}"
+                                                hidden=""
+                                            />
+                                            <span th:text="${category.value}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    CHẤT LIỆU <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree" th:each="material : ${materials}">
+                                    <li>
+                                        <label th:class="${#strings.contains(filterMaterials, material.id)} ? 'active'">
+                                            <input
+                                                name="cbMaterial"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${material.id}"
+                                                hidden=""
+                                            />
+                                            <span th:text="${material.value}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    MÀU SẮC <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree">
+                                    <li class="cb-color" th:each="color : ${colors}">
+                                        <label
+                                            th:class="${#strings.contains(filterColors, color.id)} ? 'mx-2 my-1 active' : 'mx-2 my-1'"
+                                        >
+                                            <span
+                                                class="bg-color"
+                                                th:style="'background-color: #' + ${color.value}"
+                                            ></span>
+                                            <input
+                                                name="cbColor"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${color.id}"
+                                                hidden=""
+                                            />
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                        </ul>
+                    </div>
+                    <div class="selected-filters"></div>
+                </div>
+            </div>
+            <script type="text/javascript" src="/assets/js/sidebar.js"></script>
+        </div>
+    </body>
+</html>
