@@ -77,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
             .phoneNumber(accountRegistration.getPhoneNumber())
             .gender(true)
             .isActivated(true)
+            .isVerified(0)
             .build();
 
         try {
@@ -95,7 +96,6 @@ public class AuthServiceImpl implements AuthService {
         if (account == null) {
             return null;
         } else {
-
             // cap nhap cac thong tin profile ( ngoai tru email)
             account.setFullName(profileInfo.getFullName());
             account.setAddress(profileInfo.getAddress());
@@ -146,7 +146,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void confirm(int userId, String verifyCode) {
-        
+        Account account = accountRepository.findById(userId).orElse(null);
+        if (account != null) {
+            account.setIsVerified(1);
+            accountRepository.save(account);
+        }
     }
 
     private void verifyMailOfUser(Account newAccount)

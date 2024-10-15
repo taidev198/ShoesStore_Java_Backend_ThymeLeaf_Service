@@ -5,7 +5,6 @@ import com.taidev198.bean.ToastMessage;
 import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.service.AuthService;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +48,8 @@ public class RegisterController {
             new ToastMessage("success",
                 "Đăng kí thành công")
         );
-        return "redirect:/confirm-email";
+        redirectAttrs.addAttribute("linkConfirm","https://mail.google.com/mail/u/0/#inbox");
+        return "redirect:/confirm-page";
     }
 
     @GetMapping("/register/confirm/{userId}")

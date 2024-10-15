@@ -40,6 +40,7 @@ public class Account extends EntityBase implements UserDetails {
     private Boolean gender;
     private String avatarUrl;
     private Boolean isActivated = true;
+    private int isVerified = 0;
     // One-to-Many relationship with RefreshToken
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<RefreshToken> refreshTokens;

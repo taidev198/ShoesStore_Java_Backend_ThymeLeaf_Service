@@ -53,18 +53,37 @@ public class LoginController {
             var accountInfo = AccountInfo.fromAccount(account);
             WebUtils.Sessions.setAttribute(CommonConstant.CURRENT_USER, accountInfo);
 
+            // check if account has been verified or not
+
+            if (account.getIsVerified() != 1 ) {
+                model.addAttribute(
+                    "linkConfirm",
+                    "https://mail.google.com/mail/u/0/#inbox"
+                );
+                return "redirect:/common/confirm-page";
+            }
+
             // Redirect to previous URL if current user role is customer
             return account.getRole() == AccountRole.CUSTOMER ?
                 redirectPreviousUrl() :
                 "redirect:/admin/statistic";
         } catch (BadCredentialsException ex) {
-            model.addAttribute("toastMessages", new ToastMessage("error", "Địa chỉ email hoặc mật khẩu không chính xác!"));
+            model.addAttribute(
+                "toastMessages",
+                            new ToastMessage("error", "Địa chỉ email hoặc mật khẩu không chính xác!")
+            );
             return "screens/auth/login";
         } catch (InternalAuthenticationServiceException ex) {
-            model.addAttribute("toastMessages", new ToastMessage("error", "Tài khoản không tồn tại!"));
+            model.addAttribute(
+                "toastMessages",
+                            new ToastMessage("error", "Tài khoản không tồn tại!"))
+            ;
             return "screens/auth/login";
         } catch (DisabledException ex) {
-            model.addAttribute("toastMessages", new ToastMessage("error", "Tài khoản đã bị khóa!"));
+            model.addAttribute(
+                "toastMessages",
+                            new ToastMessage("error", "Tài khoản đã bị khóa!")
+            );
             return "screens/auth/login";
         }
     }
@@ -79,7 +98,11 @@ public class LoginController {
 
     private String redirectPreviousUrl() {
         var previousUrl = WebUtils.Sessions.getAttribute(CommonConstant.PREVIOUS_GET_URL, String.class);
-        if (CommonUtils.isNotEmptyOrNullString(previousUrl) && !previousUrl.contains("/login") && !previousUrl.contains("/register")) {
+        if (
+            CommonUtils.isNotEmptyOrNullString(previousUrl)
+            && !previousUrl.contains("/login")
+            && !previousUrl.contains("/register")
+        ) {
             return String.format("redirect:%s", previousUrl);
         }
         return "redirect:/";
