@@ -216,11 +216,11 @@
 }
 
 #headerSlideCarousel .carousel-control-prev .carousel-control-prev-icon {
-    background-image: url("../images/icon/left-arrow-header-slide.png");
+    background-image: url("../images/icons/left-arrow-header-slide.png");
 }
 
 #headerSlideCarousel .carousel-control-next .carousel-control-next-icon {
-    background-image: url("../images/icon/right-arrow-header-slide.png");
+    background-image: url("../images/icons/right-arrow-header-slide.png");
 }
 
 @media only screen and (max-width: 1500px) {
