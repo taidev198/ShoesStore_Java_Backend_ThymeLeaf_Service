@@ -15,4 +15,6 @@ public interface AuthService {
     Account updatePassword(PasswordInfo passwordInfo);
 
     Account updateAvatar(MultipartFile image, Account account);
+
+    void confirm(int userId, String verifyCode);
 }

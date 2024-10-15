@@ -10,7 +10,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -19,7 +25,10 @@ import java.util.Objects;
 public class MailServiceImpl implements com.taidev198.service.MailService {
 
     private final JavaMailSender mailSender;
+    private final SpringTemplateEngine templateEngine;
 
+    @Value("${api.url}")
+    private String apiUrl;
     @Value("${spring.mail.from}")
     String from;
     public String sendEmail(String to, String subject, String content, MultipartFile[] files)
@@ -50,5 +59,37 @@ public class MailServiceImpl implements com.taidev198.service.MailService {
         mailSender.send(mimeMessage);
         log.info("Email sent");
         return "sent";
+    }
+
+    @Override
+    public void sendConfirmEmail(String email, Integer id, String secretCode)
+        throws MessagingException, UnsupportedEncodingException {
+        log.info("Sending confirm email...");
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper =
+            new MimeMessageHelper(
+                mimeMessage,
+                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                StandardCharsets.UTF_8.name()
+            );
+
+        Context context = new Context();
+        String linkConfirm = String.format("%s/%s?verifyCode=%s", apiUrl, id, secretCode);
+        Map<String, Object> property = new HashMap<>();
+        property.put("linkConfirm", linkConfirm);
+        context.setVariables(property);
+
+        helper.setFrom(from, "Taidev198");
+        helper.setTo(email);
+        helper.setSubject("Please confirm your account");
+
+        //put context's value to file.html
+        String html = templateEngine.process("confirm-email.html", context);
+        helper.setText(html, true);
+
+        //send mail
+        mailSender.send(mimeMessage);
+        log.info("Email sent");
     }
 }

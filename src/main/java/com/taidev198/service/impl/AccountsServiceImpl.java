@@ -4,6 +4,7 @@ import com.taidev198.model.Account;
 import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.repository.AccountRepository;
 import com.taidev198.service.AccountsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,14 +16,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class AccountsServiceImpl implements AccountsService {
-    private final AccountRepository accountRepository;
 
     @Autowired
-    public AccountsServiceImpl(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
+    private final AccountRepository accountRepository;
 
     public Page<Account> findAccountsByFilter(int page, int size, String order, String role, String sortBy, String query) {
         Pageable pageable = PageRequest.of(page - 1, size, order.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);

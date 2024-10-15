@@ -9,9 +9,11 @@ import com.taidev198.repository.RefreshTokenRepository;
 import com.taidev198.service.AuthService;
 import com.taidev198.service.CloudinaryService;
 import com.taidev198.service.JwtService;
+import com.taidev198.service.MailService;
 import com.taidev198.util.exception.BadRequestException;
 import com.taidev198.util.exception.DuplicateEmailException;
 import com.taidev198.util.exception.ForbiddenException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 @Service
@@ -32,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
+    private final MailService mailService;
 
     //Authenticating user and generating new token for one
     @Override
@@ -76,7 +80,9 @@ public class AuthServiceImpl implements AuthService {
             .build();
 
         try {
-            return accountRepository.save(account);
+            Account newAccount =  accountRepository.save(account);
+            verifyMailOfUser(newAccount);
+            return newAccount;
         } catch (Exception e) {
             throw new BadRequestException("Lưu tài khoản không thành công");
         }
@@ -135,6 +141,22 @@ public class AuthServiceImpl implements AuthService {
             return accountRepository.save(account);
         } catch (Exception e) {
             throw new BadRequestException("Cập nhập ảnh đại diện không thành công");
+        }
+    }
+
+    @Override
+    public void confirm(int userId, String verifyCode) {
+        
+    }
+
+    private void verifyMailOfUser(Account newAccount)
+        throws MessagingException, UnsupportedEncodingException {
+        if (newAccount.getId() != null) {
+            mailService.sendConfirmEmail(
+                newAccount.getEmail(),
+                newAccount.getId(),
+                "secretCode"
+            );
         }
     }
 }

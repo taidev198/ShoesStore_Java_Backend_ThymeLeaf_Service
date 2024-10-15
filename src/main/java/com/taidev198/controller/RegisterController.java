@@ -5,13 +5,12 @@ import com.taidev198.bean.ToastMessage;
 import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.service.AuthService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -45,7 +44,17 @@ public class RegisterController {
             return "screens/auth/register";
         }
 
-        redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Đăng kí thành công"));
+        redirectAttrs.addFlashAttribute(
+            "toastMessages",
+            new ToastMessage("success",
+                "Đăng kí thành công")
+        );
+        return "redirect:/confirm-email";
+    }
+
+    @GetMapping("/register/confirm/{userId}")
+    public String confirmAccount(@PathVariable("userId") int userId, @RequestParam String verifyCode){
+        authService.confirm(userId, verifyCode);
         return "redirect:/login";
     }
 }
