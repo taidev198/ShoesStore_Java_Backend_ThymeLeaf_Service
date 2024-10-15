@@ -66,6 +66,7 @@ public class MailServiceImpl implements com.taidev198.service.MailService {
         throws MessagingException, UnsupportedEncodingException {
         log.info("Sending confirm email...");
 
+        //init mimemessage
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper =
             new MimeMessageHelper(
@@ -74,11 +75,13 @@ public class MailServiceImpl implements com.taidev198.service.MailService {
                 StandardCharsets.UTF_8.name()
             );
 
+        //put link verify
         Context context = new Context();
         String linkConfirm = String.format("%s/%s?verifyCode=%s", apiUrl, id, secretCode);
         Map<String, Object> property = new HashMap<>();
         property.put("linkConfirm", linkConfirm);
-        context.setVariables(property);
+        //context.setVariables(property);
+        context.setVariable("linkConfirm", linkConfirm);
 
         helper.setFrom(from, "Taidev198");
         helper.setTo(email);

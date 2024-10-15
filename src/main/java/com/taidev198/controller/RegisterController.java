@@ -48,8 +48,12 @@ public class RegisterController {
             new ToastMessage("success",
                 "Đăng kí thành công")
         );
-        redirectAttrs.addAttribute("linkConfirm","https://mail.google.com/mail/u/0/#inbox");
-        return "redirect:/confirm-page";
+        model.addAttribute(
+                "linkConfirm",
+                "https://mail.google.com/mail/u/0/#inbox"
+        );
+
+        return "redirect:/common/confirm-page";
     }
 
     @GetMapping("/register/confirm/{userId}")
