@@ -14,7 +14,7 @@ public class AccountFilter {
     private int page = 1;
     private String order = "asc";
     // role = "customer" | "manager"
-    private String role = "customer";
+    private String role = "all";
     private String sortBy = "role";
     private String query = "";
 

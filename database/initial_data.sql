@@ -1860,3 +1860,4 @@ WHERE id%5 = 0;
 UPDATE product_details
 SET discount = 5
 WHERE id%3 = 0;
+update accounts set role = 'ADMIN' where id = 4

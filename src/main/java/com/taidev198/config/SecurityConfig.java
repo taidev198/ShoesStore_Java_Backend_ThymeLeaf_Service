@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(AbstractHttpConfigurer::disable)
-            .csrf(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)//disable for frontend
             .securityMatcher(new AntPathRequestMatcher("/**"))
             .authorizeHttpRequests(authorize -> authorize
                 .anyRequest().permitAll())

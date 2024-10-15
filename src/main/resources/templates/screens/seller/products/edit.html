@@ -39,7 +39,7 @@
                         <label for="gender">Giới tính</label>
                         <select id="gender" class="form-control" th:field="*{productInfo.gender}">
                             <option value="" disabled>Chọn giới tính</option>
-                            <option th:each="genderEnum : ${T(group1.intern.model.Enum.ProductGender).values()}"
+                            <option th:each="genderEnum : ${T(com.taidev198.model.Enum.ProductGender).values()}"
                                     th:value="${genderEnum.name()}"
                                     th:text="${genderEnum.name()}">
                             </option>
@@ -178,7 +178,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
-                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                    <img src="/assets/images/icon/Logo_Ananas.png" alt="confirm icon" height="75"
                          width="75">
                     <h5 class="modal-title mt-2 font-weight-bold"
                         id="confirmConfirmModalContent">Xác nhận thay đổi</h5>

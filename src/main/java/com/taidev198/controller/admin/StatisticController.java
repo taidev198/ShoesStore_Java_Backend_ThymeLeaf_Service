@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 
+import com.taidev198.annotation.PreAuthorizeAdmin;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorizeAdmin
 @RequestMapping("/admin/statistic")
 public class StatisticController {
 

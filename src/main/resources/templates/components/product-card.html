@@ -21,11 +21,20 @@
                 />
                 <div th:if="${quantity > 0}" class="product-card-button">
                     <div
-                        th:replace="~{/components/orange-button :: 
+                        th:replace="~{/components/orange-button ::
                                             buttonFragment(
-                                                buttonText='MUA NGAY', 
-                                                style='padding : 16px 12px 6px 12px; font-size : 23px', 
-                                                typeButton='button', 
+                                                buttonText='MUA NGAY',
+                                                style='padding : 16px 12px 6px 12px; font-size : 23px',
+                                                typeButton='button',
+                                                linkButton='/products/' + ${id}
+                                            )}"
+                    ></div>
+                    <div
+                        th:replace="~{/components/orange-button ::
+                                            buttonFragment(
+                                                buttonText='THÊM GIỎ HÀNG',
+                                                style='padding : 16px 12px 6px 12px; font-size : 23px',
+                                                typeButton='button',
                                                 linkButton='/products/' + ${id}
                                             )}"
                     ></div>
@@ -42,8 +51,8 @@
                 </a>
                 <p class="product-card-style" th:text="${style}"></p>
                 <p class="product-card-price-wrapper">
-                    <span class="product-card-origin-price" 
-                          th:if="${originPrice != price}" 
+                    <span class="product-card-origin-price"
+                          th:if="${originPrice != price}"
                           th:text="${originPrice}"></span>
                     <span class="product-card-price" th:text="${price}"></span>
                 </p>

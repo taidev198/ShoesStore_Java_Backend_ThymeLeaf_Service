@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("adminAccountsController")
-@PreAuthorizeAdmin
 @RequestMapping("/admin/accounts")
 @RequiredArgsConstructor
 public class AccountsController {

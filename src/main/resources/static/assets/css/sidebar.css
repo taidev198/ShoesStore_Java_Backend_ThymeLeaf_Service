@@ -114,7 +114,7 @@ li {
 
 .active-gender {
     font-family: var(--font-geometric-extra-bold) !important;
-    font-weight: bold !important; 
+    font-weight: bold !important;
     font-size: 23px !important;
     color: #000 !important;
 }
@@ -167,7 +167,7 @@ li {
     float: right;
     top: 7px;
     display: block;
-    background: url(../images/icons/sidebar/icon_X.png) no-repeat;
+    background: url(../images/icon/sidebar/icon_X.png) no-repeat;
     width: 10px;
     height: 10px;
 }
@@ -194,7 +194,7 @@ li {
 }
 
 .left-tree .caret {
-    background: #fff url(../images/icons/sidebar/icon_down_black.png) no-repeat;
+    background: #fff url(../images/icon/sidebar/icon_down_black.png) no-repeat;
     position: relative;
     width: 12px;
     height: 8px;
@@ -202,7 +202,7 @@ li {
 }
 
 .left-tree .caret-active {
-    background: #fff url(../images/icons/sidebar/icon_up_orange.png) no-repeat;
+    background: #fff url(../images/icon/sidebar/icon_up_orange.png) no-repeat;
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
@@ -211,7 +211,7 @@ li {
 }
 
 .left-tree .caret-normal {
-    background: #fff url(../images/icons/sidebar/icon_down_black.png) no-repeat;
+    background: #fff url(../images/icon/sidebar/icon_down_black.png) no-repeat;
 }
 
 /* 1st level */
@@ -270,7 +270,7 @@ li {
 .left-tree .tree .cb-checked .glyphicon {
     display: inline-block;
     top: 7px;
-    background: url(../images/icons/sidebar/icon_X.png) no-repeat;
+    background: url(../images/icon/sidebar/icon_X.png) no-repeat;
     width: 10px;
     height: 10px;
 }
@@ -286,7 +286,7 @@ li {
     background-color: #fff;
     /* border: 1px solid red; */
     width: 90%;
-    background: url(../images/icons/sidebar/bg_divider.png) repeat-x 7px;
+    background: url(../images/icon/sidebar/bg_divider.png) repeat-x 7px;
     height: 2px;
     margin: 4px 0px;
 }

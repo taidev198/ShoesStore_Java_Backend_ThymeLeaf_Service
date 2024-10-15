@@ -43,7 +43,7 @@
                 <input type="text" id="account-management-search-input" name="query"
                        placeholder="Nhập vào họ tên hoặc email..." th:value="${filter.query}"
                        onkeypress="checkEnterKey(event)">
-                <img alt="search icon" src="/assets/images/icons/search.png" class="account-management-search-icon">
+                <img alt="search icon" src="/assets/images/icon/search.png" class="account-management-search-icon">
             </div>
             <div class="account-management-header-vr"></div>
             <div class="select-wrapper">
@@ -132,10 +132,10 @@
                                             </span>
                                 </td>
                                 <td th:if="${account.gender}">
-                                    <img src="/assets/images/icons/admin/otoko.png" class="information-gender" alt=""/>
+                                    <img src="/assets/images/icon/admin/otoko.png" class="information-gender" alt=""/>
                                 </td>
                                 <td th:if="${!account.gender}">
-                                    <img src="/assets/images/icons/admin/onnna.png" class="information-gender" alt=""/>
+                                    <img src="/assets/images/icon/admin/onnna.png" class="information-gender" alt=""/>
                                 </td>
                                 <td th:text="${#temporals.format(account.dateOfBirth, 'yyyy/dd/MM')}"></td>
                                 <td th:with="age=${account.dateOfBirth != null ? T(java.time.Period).between(account.dateOfBirth, T(java.time.LocalDate).now()).years : null}"
