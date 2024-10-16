@@ -1,5 +1,18 @@
 package com.taidev198.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.*;
+
+import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.taidev198.bean.OrderInfo;
 import com.taidev198.bean.RevenueInfo;
 import com.taidev198.model.Account;
@@ -11,24 +24,15 @@ import com.taidev198.repository.customization.OrdersCustomRepository;
 import com.taidev198.service.OrdersService;
 import com.taidev198.util.exception.BadRequestException;
 import com.taidev198.util.exception.ForbiddenException;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.util.*;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
     private final OrdersCustomRepository orderCustomRepository;
     private final OrdersRepository ordersRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,13 +40,13 @@ public class OrdersServiceImpl implements OrdersService {
     public Page<OrderInfo> getOrders(@Nullable Integer accountId, @Nullable OrderStatus status, Pageable pageable) {
         if (accountId != null) {
             var orders = status != null
-                ? orderCustomRepository.findAllByAccountIdAndStatus(accountId, status, pageable)
-                : orderCustomRepository.findAllByAccountId(accountId, pageable);
+                    ? orderCustomRepository.findAllByAccountIdAndStatus(accountId, status, pageable)
+                    : orderCustomRepository.findAllByAccountId(accountId, pageable);
             return orders.map(OrderInfo::fromEntity);
         }
         return status != null
-            ? orderCustomRepository.findAllByStatus(status, pageable).map(OrderInfo::fromEntity)
-            : orderCustomRepository.findAllWithRelationship(pageable).map(OrderInfo::fromEntity);
+                ? orderCustomRepository.findAllByStatus(status, pageable).map(OrderInfo::fromEntity)
+                : orderCustomRepository.findAllWithRelationship(pageable).map(OrderInfo::fromEntity);
     }
 
     @Override
@@ -54,17 +58,17 @@ public class OrdersServiceImpl implements OrdersService {
 
         // Check order status
         var orderStatus = OrderStatus.fromString(status);
-        if (orderStatus == null)
-            throw new BadRequestException(invalidStatus);
+        if (orderStatus == null) throw new BadRequestException(invalidStatus);
 
         // Check account permission
-        if (account == null)
-            throw new ForbiddenException(noPermission);
+        if (account == null) throw new ForbiddenException(noPermission);
         // For customer, only allow to cancel or receive order
-        if ((account.getRole() == AccountRole.CUSTOMER) && !(orderStatus == OrderStatus.CANCEL || orderStatus == OrderStatus.RECEIVED))
+        if ((account.getRole() == AccountRole.CUSTOMER)
+                && !(orderStatus == OrderStatus.CANCEL || orderStatus == OrderStatus.RECEIVED))
             throw new ForbiddenException(noPermission);
         // For seller, only allow to change order status to other than CANCEL and RECEIVED
-        if ((account.getRole() == AccountRole.SELLER) && (orderStatus == OrderStatus.CANCEL || orderStatus == OrderStatus.RECEIVED))
+        if ((account.getRole() == AccountRole.SELLER)
+                && (orderStatus == OrderStatus.CANCEL || orderStatus == OrderStatus.RECEIVED))
             throw new ForbiddenException(noPermission);
 
         var order = ordersRepository.findById(orderId).orElseThrow(() -> new BadRequestException(notFound));
@@ -75,21 +79,22 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public long countByDate(LocalDate date) {
         return ordersRepository.countByUpdatedAtBetween(
-            date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+                date.atStartOfDay(), date.plusDays(1).atStartOfDay());
     }
 
     @Override
     public double sumTotalPriceByDate(LocalDate date) {
         Optional<Double> result = ordersRepository.sumTotalPriceByUpdatedAtBetweenAndStatus(
-            date.atStartOfDay(), date.plusDays(1).atStartOfDay(), OrderStatus.DONE);
+                date.atStartOfDay(), date.plusDays(1).atStartOfDay(), OrderStatus.DONE);
         return result.orElse(0.0);
     }
 
     @Override
     public double sumEstimatedRevenueByDate(LocalDate date) {
         Optional<Double> result = ordersRepository.sumTotalPriceByUpdatedAtBetweenAndStatuses(
-            date.atStartOfDay(), date.plusDays(1).atStartOfDay(),
-            Arrays.asList(OrderStatus.CONFIRM, OrderStatus.RECEIVED, OrderStatus.DONE));
+                date.atStartOfDay(),
+                date.plusDays(1).atStartOfDay(),
+                Arrays.asList(OrderStatus.CONFIRM, OrderStatus.RECEIVED, OrderStatus.DONE));
         return result.orElse(0.0);
     }
 
@@ -98,9 +103,18 @@ public class OrdersServiceImpl implements OrdersService {
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
 
-        long orderCount = ordersRepository.countByUpdatedAtBetween(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
-        double totalRevenue = ordersRepository.sumTotalPriceByUpdatedAtBetweenAndStatus(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay(), OrderStatus.DONE).orElse(0.0);
-        double predictedRevenue = ordersRepository.sumTotalPriceByUpdatedAtBetweenAndStatuses(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay(), Arrays.asList(OrderStatus.CONFIRM, OrderStatus.RECEIVED, OrderStatus.DONE)).orElse(0.0);
+        long orderCount = ordersRepository.countByUpdatedAtBetween(
+                startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
+        double totalRevenue = ordersRepository
+                .sumTotalPriceByUpdatedAtBetweenAndStatus(
+                        startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay(), OrderStatus.DONE)
+                .orElse(0.0);
+        double predictedRevenue = ordersRepository
+                .sumTotalPriceByUpdatedAtBetweenAndStatuses(
+                        startDate.atStartOfDay(),
+                        endDate.plusDays(1).atStartOfDay(),
+                        Arrays.asList(OrderStatus.CONFIRM, OrderStatus.RECEIVED, OrderStatus.DONE))
+                .orElse(0.0);
 
         return new RevenueInfo(orderCount, totalRevenue, predictedRevenue);
     }
@@ -111,15 +125,31 @@ public class OrdersServiceImpl implements OrdersService {
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
 
-        List<Order> orders = ordersRepository.findByUpdatedAtBetween(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
+        List<Order> orders = ordersRepository.findByUpdatedAtBetween(
+                startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             LocalDateTime dateTimeStart = date.atStartOfDay();
             LocalDateTime dateTimeEnd = date.plusDays(1).atStartOfDay();
 
-            long orderCount = orders.stream().filter(o -> o.getUpdatedAt().isAfter(dateTimeStart) && o.getUpdatedAt().isBefore(dateTimeEnd)).count();
-            double totalRevenue = orders.stream().filter(o -> o.getUpdatedAt().isAfter(dateTimeStart) && o.getUpdatedAt().isBefore(dateTimeEnd) && OrderStatus.DONE.equals(o.getStatus())).mapToDouble(Order::getTotalPrice).sum();
-            double estimatedRevenue = orders.stream().filter(o -> o.getUpdatedAt().isAfter(dateTimeStart) && o.getUpdatedAt().isBefore(dateTimeEnd) && (OrderStatus.CONFIRM.equals(o.getStatus()) || OrderStatus.RECEIVED.equals(o.getStatus()) || OrderStatus.DONE.equals(o.getStatus()))).mapToDouble(Order::getTotalPrice).sum();
+            long orderCount = orders.stream()
+                    .filter(o -> o.getUpdatedAt().isAfter(dateTimeStart)
+                            && o.getUpdatedAt().isBefore(dateTimeEnd))
+                    .count();
+            double totalRevenue = orders.stream()
+                    .filter(o -> o.getUpdatedAt().isAfter(dateTimeStart)
+                            && o.getUpdatedAt().isBefore(dateTimeEnd)
+                            && OrderStatus.DONE.equals(o.getStatus()))
+                    .mapToDouble(Order::getTotalPrice)
+                    .sum();
+            double estimatedRevenue = orders.stream()
+                    .filter(o -> o.getUpdatedAt().isAfter(dateTimeStart)
+                            && o.getUpdatedAt().isBefore(dateTimeEnd)
+                            && (OrderStatus.CONFIRM.equals(o.getStatus())
+                                    || OrderStatus.RECEIVED.equals(o.getStatus())
+                                    || OrderStatus.DONE.equals(o.getStatus())))
+                    .mapToDouble(Order::getTotalPrice)
+                    .sum();
 
             dailyRevenue.put(date.toString(), new RevenueInfo(orderCount, totalRevenue, estimatedRevenue));
         }
@@ -142,10 +172,9 @@ public class OrdersServiceImpl implements OrdersService {
                 totalRevenue += sumTotalPriceByDate(date);
                 estimatedRevenue += sumEstimatedRevenueByDate(date);
             }
-            monthlyRevenue.put(yearMonth.getMonth().toString(),
-                new RevenueInfo(orderCount, totalRevenue, estimatedRevenue));
+            monthlyRevenue.put(
+                    yearMonth.getMonth().toString(), new RevenueInfo(orderCount, totalRevenue, estimatedRevenue));
         }
         return monthlyRevenue;
     }
-
 }

@@ -1,8 +1,8 @@
 package com.taidev198.model.Embeddables;
 
-import lombok.*;
-
 import java.util.List;
+
+import lombok.*;
 
 @Builder
 @Getter

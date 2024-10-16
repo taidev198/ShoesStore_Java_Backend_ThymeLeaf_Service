@@ -1,9 +1,10 @@
 package com.taidev198.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.taidev198.bean.*;
 import com.taidev198.model.Account;
 import com.taidev198.model.Enum.AccountRole;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface AuthService {
     Credential login(LoginRequest loginRequest);
