@@ -46,4 +46,9 @@ public class AccountsServiceImpl implements AccountsService {
             accountRepository.save(account);
         }
     }
+
+    @Override
+    public Account findAccountByEmail(String email) {
+        return accountRepository.findByEmail(email).orElse(null);
+    }
 }

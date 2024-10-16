@@ -18,6 +18,14 @@ CREATE TABLE accounts (
     created_at DATETIME DEFAULT (now()),
     updated_at DATETIME
 );
+
+CREATE TABLE account_activity (
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          activity VARCHAR(255) NOT NULL,
+                          created_at DATETIME DEFAULT (now()),
+                          updated_at DATETIME
+);
+
 CREATE TABLE constants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(255) NOT NULL,

@@ -40,8 +40,13 @@ public class AuthServiceImpl implements AuthService {
     //Authenticating user and generating new token for one
     @Override
     public Credential login(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        Authentication authentication =
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    loginRequest.getEmail(),
+                    loginRequest.getPassword()
+                )
+            );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Account account = (Account) authentication.getPrincipal();
         Credential response = jwtService.generateToken(account.getId());

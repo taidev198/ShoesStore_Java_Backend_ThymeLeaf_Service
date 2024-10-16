@@ -137,7 +137,8 @@ public class ShoppingCartsServiceImpl implements ShoppingCartsService {
 
     @Override
     public void deleteCartItemByID(int cartId, int accountId) {
-        Optional<ShoppingCart> cart = shoppingCartsRepository.findShoppingCartByIdAndAccountId(cartId, accountId);
+        Optional<ShoppingCart> cart =
+            shoppingCartsRepository.findShoppingCartByIdAndAccountId(cartId, accountId);
         if(!cart.isPresent()) {
             throw new IllegalArgumentException("not found cart with current user ID");
         }
