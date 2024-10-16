@@ -1,13 +1,14 @@
 package com.taidev198.bean;
 
+import java.util.List;
+
 import com.taidev198.model.Embeddables.ProductDescription;
 import com.taidev198.model.ProductImage;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

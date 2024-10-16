@@ -1,12 +1,11 @@
 package com.taidev198.config;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.annotation.Bean;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
-
-import java.nio.charset.StandardCharsets;
 
 public class ThymeleafConfig {
 
@@ -26,5 +25,4 @@ public class ThymeleafConfig {
         templateResolver.setCacheable(false);
         return templateResolver;
     }
-
 }

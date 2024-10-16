@@ -1,32 +1,29 @@
 package com.taidev198.controller.seller;
 
-import com.taidev198.annotation.PreAuthorizeAllWithoutCustomer;
-import com.taidev198.bean.*;
-import com.taidev198.model.ProductDetail;
-import com.taidev198.service.ConstantService;
-import com.taidev198.service.FilterService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.taidev198.model.ProductImage;
-import com.taidev198.service.ProductService;
-import com.taidev198.util.exception.BadRequestException;
-import com.taidev198.util.exception.NotFoundObjectException;
-import com.taidev198.util.util.PaginationUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.taidev198.annotation.PreAuthorizeAllWithoutCustomer;
+import com.taidev198.bean.*;
+import com.taidev198.model.ProductDetail;
+import com.taidev198.model.ProductImage;
+import com.taidev198.service.ConstantService;
+import com.taidev198.service.FilterService;
+import com.taidev198.service.ProductService;
+import com.taidev198.util.exception.NotFoundObjectException;
+import com.taidev198.util.util.PaginationUtil;
 
 @Controller("sellerProductsController")
 @PreAuthorizeAllWithoutCustomer
@@ -152,8 +149,7 @@ public class ProductsController {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Integer> imagesToRemoveList;
         try {
-            imagesToRemoveList = objectMapper.readValue(imagesToRemove, new TypeReference<List<Integer>>() {
-            });
+            imagesToRemoveList = objectMapper.readValue(imagesToRemove, new TypeReference<List<Integer>>() {});
             productService.updateProductImages(id, imagesToAdd, imagesToRemoveList);
             model.addAttribute("toastMessages", new ToastMessage("success", "Cập nhật hình ảnh thành công!"));
         } catch (Exception e) {
@@ -176,8 +172,8 @@ public class ProductsController {
     }
 
     @PostMapping
-    public String importProducts(@RequestParam("file") MultipartFile file, Model model,
-            RedirectAttributes redirectAttrs) {
+    public String importProducts(
+            @RequestParam("file") MultipartFile file, Model model, RedirectAttributes redirectAttrs) {
         if (file.isEmpty()) {
             model.addAttribute("toastMessages", new ToastMessage("error", "Bạn chưa chọn file."));
             return "screens/seller/products/index";
@@ -193,8 +189,7 @@ public class ProductsController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProductAdmin(
-            @PathVariable("id") Integer id) {
+    public String deleteProductAdmin(@PathVariable("id") Integer id) {
         try {
             productService.deleteProductDetailById(id);
         } catch (NotFoundObjectException ex) {

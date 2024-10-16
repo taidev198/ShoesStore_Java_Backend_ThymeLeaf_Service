@@ -2,6 +2,7 @@ package com.taidev198.bean;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
 import lombok.*;
 
 @Getter

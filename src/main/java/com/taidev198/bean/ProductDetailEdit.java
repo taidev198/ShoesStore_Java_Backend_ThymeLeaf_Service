@@ -1,13 +1,13 @@
 package com.taidev198.bean;
 
-import com.taidev198.model.ProductImage;
+import java.util.List;
+
 import com.taidev198.model.ProductQuantity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +26,4 @@ public class ProductDetailEdit {
     private Integer originPrice;
     private String color;
     private List<ProductQuantity> sizeQuantity;
-
 }

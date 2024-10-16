@@ -1,17 +1,18 @@
 package com.taidev198.bean;
 
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+
 import com.taidev198.model.ProductDetail;
 import com.taidev198.model.ProductImage;
 import com.taidev198.model.ProductQuantity;
 import com.taidev198.model.ShoppingCart;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
 
 @Data
 @NoArgsConstructor
@@ -37,21 +38,36 @@ public class ShoppingCartInfo {
 
     public static ShoppingCartInfo fromShoppingCart(ShoppingCart shoppingCart) {
         return ShoppingCartInfo.builder()
-            .id(shoppingCart.getId())
-            .customerId(shoppingCart.getAccount().getId())
-            .productId(shoppingCart.getProductQuantity().getProductDetail().getProduct().getId())
-            .productDetailId(shoppingCart.getProductQuantity().getProductDetail().getId())
-            .productQuantityId(shoppingCart.getProductQuantity().getId())
-            .quantity(shoppingCart.getQuantity())
-            .style(shoppingCart.getProductQuantity().getProductDetail().getStyle().getValue())
-            .priceProduct(shoppingCart.getProductQuantity().getProductDetail().getPrice())
-            .price(shoppingCart.getQuantity() * shoppingCart.getProductQuantity().getProductDetail().getPrice())
-            .size(shoppingCart.getProductQuantity().getSize().getValue())
-            .name(shoppingCart.getProductQuantity().getProductDetail().getProduct().getName())
-            .discount(shoppingCart.getProductQuantity().getProductDetail().getDiscount())
-            .images(shoppingCart.getProductQuantity().getProductDetail().getImages())
-            .sizeQuantity(shoppingCart.getProductQuantity())
-            .build();
+                .id(shoppingCart.getId())
+                .customerId(shoppingCart.getAccount().getId())
+                .productId(shoppingCart
+                        .getProductQuantity()
+                        .getProductDetail()
+                        .getProduct()
+                        .getId())
+                .productDetailId(
+                        shoppingCart.getProductQuantity().getProductDetail().getId())
+                .productQuantityId(shoppingCart.getProductQuantity().getId())
+                .quantity(shoppingCart.getQuantity())
+                .style(shoppingCart
+                        .getProductQuantity()
+                        .getProductDetail()
+                        .getStyle()
+                        .getValue())
+                .priceProduct(
+                        shoppingCart.getProductQuantity().getProductDetail().getPrice())
+                .price(shoppingCart.getQuantity()
+                        * shoppingCart.getProductQuantity().getProductDetail().getPrice())
+                .size(shoppingCart.getProductQuantity().getSize().getValue())
+                .name(shoppingCart
+                        .getProductQuantity()
+                        .getProductDetail()
+                        .getProduct()
+                        .getName())
+                .discount(shoppingCart.getProductQuantity().getProductDetail().getDiscount())
+                .images(shoppingCart.getProductQuantity().getProductDetail().getImages())
+                .sizeQuantity(shoppingCart.getProductQuantity())
+                .build();
     }
 
     public String getProductURL() {

@@ -1,6 +1,5 @@
 package com.taidev198.bean;
 
-import com.taidev198.model.Embeddables.ProductDescription;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RevenueInfo {
-	private long orderCount;
+    private long orderCount;
     private double currentRevenue;
     private double predictedRevenue;
 }

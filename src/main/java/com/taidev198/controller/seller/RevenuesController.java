@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.taidev198.bean.RevenueInfo;
-import com.taidev198.repository.OrdersRepository;
 import com.taidev198.service.OrdersService;
 
 @RestController
 public class RevenuesController {
-	@Autowired
+    @Autowired
     private OrdersService orderService;
 
     @GetMapping("/revenues/daily")

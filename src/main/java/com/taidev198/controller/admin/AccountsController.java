@@ -1,7 +1,15 @@
 package com.taidev198.controller.admin;
 
+import jakarta.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.taidev198.annotation.CurrentAccount;
-import com.taidev198.annotation.PreAuthorizeAdmin;
 import com.taidev198.bean.AccountActivateForm;
 import com.taidev198.bean.AccountFilter;
 import com.taidev198.bean.AccountRegistration;
@@ -11,14 +19,8 @@ import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.service.AccountsService;
 import com.taidev198.service.AuthService;
 import com.taidev198.util.util.PaginationUtil;
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("adminAccountsController")
 @RequestMapping("/admin/accounts")
@@ -28,21 +30,11 @@ public class AccountsController {
     private final AuthService authService;
 
     @GetMapping
-    public String index(
-        @CurrentAccount Account account,
-        @ModelAttribute AccountFilter filter,
-        Model model
-    ) {
+    public String index(@CurrentAccount Account account, @ModelAttribute AccountFilter filter, Model model) {
         Page<Account> accounts = accountService.findAccountsByFilter(
-            filter.getPage(), 24, filter.getOrder(), filter.getRole(),
-            filter.getSortBy(), filter.getQuery()
-        );
+                filter.getPage(), 24, filter.getOrder(), filter.getRole(), filter.getSortBy(), filter.getQuery());
 
-        PaginationUtil paginationHelper = filter.createPaginationUtil(
-            (int) accounts.getTotalElements(),
-            24,
-            5
-        );
+        PaginationUtil paginationHelper = filter.createPaginationUtil((int) accounts.getTotalElements(), 24, 5);
 
         model.addAttribute("accounts", accounts);
         model.addAttribute("resultCount", accounts.getTotalElements());
@@ -55,9 +47,7 @@ public class AccountsController {
 
     @PostMapping("/activate")
     public String activateAccount(
-        @CurrentAccount Account account,
-        @RequestBody AccountActivateForm accountActivateForm
-    ) {
+            @CurrentAccount Account account, @RequestBody AccountActivateForm accountActivateForm) {
         accountService.toggleAccountActivation(accountActivateForm.getId(), accountActivateForm.isActivate());
         return "redirect:/admin/accounts";
     }
@@ -70,11 +60,10 @@ public class AccountsController {
 
     @PostMapping
     public String createSellerAccount(
-        @Valid @ModelAttribute("sellerAccount") AccountRegistration sellerAccount,
-        BindingResult bindingResult,
-        Model model,
-        RedirectAttributes redirectAttrs
-    ) {
+            @Valid @ModelAttribute("sellerAccount") AccountRegistration sellerAccount,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttrs) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sellerAccount", sellerAccount);
             return "/screens/admin/accounts/new";
@@ -87,7 +76,8 @@ public class AccountsController {
             return "/screens/admin/accounts/new";
         }
 
-        redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Tạo tài khoản seller thành công"));
+        redirectAttrs.addFlashAttribute(
+                "toastMessages", new ToastMessage("success", "Tạo tài khoản seller thành công"));
         return "redirect:/admin/accounts";
     }
 }

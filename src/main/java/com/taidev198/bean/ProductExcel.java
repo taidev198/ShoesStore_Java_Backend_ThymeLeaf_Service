@@ -1,17 +1,19 @@
 package com.taidev198.bean;
 
+import org.apache.poi.ss.usermodel.Row;
+
 import com.taidev198.service.ExcelService;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.poi.ss.usermodel.Row;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductExcel implements ExcelReader<ProductExcel>{
+public class ProductExcel implements ExcelReader<ProductExcel> {
     private String name;
     private String category;
     private String material;
@@ -25,15 +27,15 @@ public class ProductExcel implements ExcelReader<ProductExcel>{
     @Override
     public ProductExcel fromRow(Row row) {
         return ProductExcel.builder()
-            .name(ExcelService.getCellValueAsString(row.getCell(0)))
-            .category(ExcelService.getCellValueAsString(row.getCell(1)))
-            .material(ExcelService.getCellValueAsString(row.getCell(2)))
-            .originPrice((int) ExcelService.getCellValueAsNumeric(row.getCell(3)))
-            .gender(ExcelService.getCellValueAsString(row.getCell(4)))
-            .color(ExcelService.getCellValueAsString(row.getCell(5)))
-            .style(ExcelService.getCellValueAsString(row.getCell(6)))
-            .url(ExcelService.getCellValueAsString(row.getCell(7)))
-            .quantity(ExcelService.getCellValueAsString(row.getCell(8)))
-            .build();
+                .name(ExcelService.getCellValueAsString(row.getCell(0)))
+                .category(ExcelService.getCellValueAsString(row.getCell(1)))
+                .material(ExcelService.getCellValueAsString(row.getCell(2)))
+                .originPrice((int) ExcelService.getCellValueAsNumeric(row.getCell(3)))
+                .gender(ExcelService.getCellValueAsString(row.getCell(4)))
+                .color(ExcelService.getCellValueAsString(row.getCell(5)))
+                .style(ExcelService.getCellValueAsString(row.getCell(6)))
+                .url(ExcelService.getCellValueAsString(row.getCell(7)))
+                .quantity(ExcelService.getCellValueAsString(row.getCell(8)))
+                .build();
     }
 }

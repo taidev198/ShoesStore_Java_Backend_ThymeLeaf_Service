@@ -1,15 +1,16 @@
 package com.taidev198.bean;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import com.taidev198.model.Enum.OrderStatus;
 import com.taidev198.model.Order;
 import com.taidev198.util.CurrencyUtil;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,15 +28,17 @@ public class OrderInfo {
 
     public static OrderInfo fromEntity(Order order) {
         return OrderInfo.builder()
-            .id(order.getId())
-            .totalPrice(CurrencyUtil.formatCurrency(order.getTotalPrice()))
-            .phoneNumber(order.getPhoneNumber())
-            .address(order.getAddress())
-            .status(OrderInfo.getStatus(order.getStatus()))
-            .account(AccountInfo.fromAccount(order.getAccount()))
-            .orderDetailInfos(order.getOrderDetails().stream().map(OrderDetailInfo::fromEntity).toList())
-            .createdAt(order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
-            .build();
+                .id(order.getId())
+                .totalPrice(CurrencyUtil.formatCurrency(order.getTotalPrice()))
+                .phoneNumber(order.getPhoneNumber())
+                .address(order.getAddress())
+                .status(OrderInfo.getStatus(order.getStatus()))
+                .account(AccountInfo.fromAccount(order.getAccount()))
+                .orderDetailInfos(order.getOrderDetails().stream()
+                        .map(OrderDetailInfo::fromEntity)
+                        .toList())
+                .createdAt(order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+                .build();
     }
 
     private static String getStatus(OrderStatus orderStatus) {
@@ -52,5 +55,4 @@ public class OrderInfo {
     public boolean isDisabled() {
         return status.equals("Bị từ chối") || status.equals("Đã hủy");
     }
-
 }

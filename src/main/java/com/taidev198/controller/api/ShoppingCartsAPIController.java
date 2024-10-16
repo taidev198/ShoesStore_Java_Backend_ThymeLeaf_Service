@@ -1,25 +1,21 @@
 package com.taidev198.controller.api;
 
-import com.taidev198.annotation.CurrentAccount;
-import com.taidev198.bean.CartAPIRequest;
-import com.taidev198.bean.CartAPIResponse;
-import com.taidev198.bean.ShoppingCartInfo;
-import com.taidev198.model.Account;
-import com.taidev198.model.ShoppingCart;
-import com.taidev198.repository.ShoppingCartsRepository;
-import com.taidev198.service.ShoppingCartsService;
-import com.taidev198.util.exception.UnauthorizedException;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-
+import com.taidev198.annotation.CurrentAccount;
+import com.taidev198.bean.CartAPIRequest;
+import com.taidev198.bean.CartAPIResponse;
+import com.taidev198.bean.ShoppingCartInfo;
+import com.taidev198.model.Account;
+import com.taidev198.service.ShoppingCartsService;
+import com.taidev198.util.exception.UnauthorizedException;
 
 @RestController
 @RequestMapping("/carts")
@@ -33,10 +29,7 @@ public class ShoppingCartsAPIController {
 
     @PatchMapping(value = "/{id}/edit", consumes = "application/json", produces = "application/json")
     public ResponseEntity<CartAPIResponse> update(
-        @PathVariable Integer id,
-        @RequestBody CartAPIRequest requestBody,
-        @CurrentAccount Account account
-    ) {
+            @PathVariable Integer id, @RequestBody CartAPIRequest requestBody, @CurrentAccount Account account) {
         if (account == null) {
             throw new UnauthorizedException("You need to login to update cart");
         }
@@ -51,7 +44,12 @@ public class ShoppingCartsAPIController {
 
         // "update" -> reload the page to not display duplicate product
         // "no-update" -> update UI on front-end
-        String isNeedUpdate = shoppingCartsService.updateProductInCart(id, account.getId(), requestBody.getProductQuantityId(), requestBody.getQuantity(), requestBody.getAction());
+        String isNeedUpdate = shoppingCartsService.updateProductInCart(
+                id,
+                account.getId(),
+                requestBody.getProductQuantityId(),
+                requestBody.getQuantity(),
+                requestBody.getAction());
         CartAPIResponse response = new CartAPIResponse();
 
         // recalculate total price if no reload the page
@@ -68,7 +66,7 @@ public class ShoppingCartsAPIController {
             }
 
             NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-            String totalOriginPriceFormatted =  numberFormat.format(totalOriginPrice) + " VND";
+            String totalOriginPriceFormatted = numberFormat.format(totalOriginPrice) + " VND";
             String totalDiscountedPriceFormatted = numberFormat.format(totalDiscountedPrice) + " VND";
             String finalPriceFormatted = numberFormat.format(finalPrice) + " VND";
             response.setTotalOriginPrice(totalOriginPriceFormatted);

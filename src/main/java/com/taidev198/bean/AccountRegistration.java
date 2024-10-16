@@ -1,10 +1,12 @@
 package com.taidev198.bean;
 
-import com.taidev198.annotation.PasswordsMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import com.taidev198.annotation.PasswordsMatch;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

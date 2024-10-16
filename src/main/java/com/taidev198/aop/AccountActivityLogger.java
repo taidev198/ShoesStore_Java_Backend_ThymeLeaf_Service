@@ -2,12 +2,10 @@ package com.taidev198.aop;
 
 
 import com.taidev198.bean.LoginRequest;
-import com.taidev198.model.Account;
 import com.taidev198.model.AccountActivity;
 import com.taidev198.model.Enum.AccountActivityEnum;
 import com.taidev198.service.AccountActivityService;
 import com.taidev198.service.AccountsService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -17,8 +15,6 @@ import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.support.BindingAwareModelMap;
-
-import java.util.Arrays;
 
 @Slf4j
 @Component

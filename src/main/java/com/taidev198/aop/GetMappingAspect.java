@@ -1,7 +1,10 @@
 package com.taidev198.aop;
 
-import com.taidev198.util.util.CommonUtils;
-import com.taidev198.util.util.WebUtils;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -13,18 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import com.taidev198.util.util.CommonUtils;
+import com.taidev198.util.util.WebUtils;
 
 @Component
 @Aspect
 public class GetMappingAspect {
 
     @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
-    public void getAction() {
-    }
+    public void getAction() {}
 
     @Before("getAction()")
     public void setUrlAction(JoinPoint joinPoint) {
@@ -51,12 +51,16 @@ public class GetMappingAspect {
         for (int i = 0; i < parameterAnnotations.length; i++) {
             for (Annotation annotation : parameterAnnotations[i]) {
                 if (annotation instanceof PathVariable pathVariable) {
-                    String variableName = CommonUtils.isNotEmptyOrNullString(pathVariable.value()) ? pathVariable.value() : pathVariable.name();
+                    String variableName = CommonUtils.isNotEmptyOrNullString(pathVariable.value())
+                            ? pathVariable.value()
+                            : pathVariable.name();
                     pathVariables.put(variableName, args[i]);
                     continue;
                 }
                 if (annotation instanceof RequestParam requestParam) {
-                    String paramName = CommonUtils.isNotEmptyOrNullString(requestParam.value()) ? requestParam.value() : requestParam.name();
+                    String paramName = CommonUtils.isNotEmptyOrNullString(requestParam.value())
+                            ? requestParam.value()
+                            : requestParam.name();
                     requestParams.put(paramName, args[i]);
                 }
             }
@@ -69,11 +73,10 @@ public class GetMappingAspect {
     }
 
     private String getGetUrl(
-        RequestMapping requestMapping,
-        GetMapping getMapping,
-        Map<String, Object> pathVariables,
-        Map<String, Object> requestParams
-    ) {
+            RequestMapping requestMapping,
+            GetMapping getMapping,
+            Map<String, Object> pathVariables,
+            Map<String, Object> requestParams) {
         String baseUrl = requestMapping != null ? getUrl(requestMapping.value()) : null;
         StringBuilder endpoint = new StringBuilder(getUrl(getMapping.value()));
 
@@ -81,14 +84,18 @@ public class GetMappingAspect {
         for (Map.Entry<String, Object> entry : pathVariables.entrySet()) {
             if (entry.getValue() == null)
                 throw new IllegalArgumentException("Path variable " + entry.getKey() + " is null");
-            endpoint = new StringBuilder(endpoint.toString().replace("{" + entry.getKey() + "}", entry.getValue().toString()));
+            endpoint = new StringBuilder(endpoint.toString()
+                    .replace("{" + entry.getKey() + "}", entry.getValue().toString()));
         }
 
         // Add request params
         boolean isFirstParam = true;
         for (Map.Entry<String, Object> entry : requestParams.entrySet()) {
             if (entry.getValue() != null) {
-                endpoint.append(isFirstParam ? "?" : "&").append(entry.getKey()).append("=").append(entry.getValue());
+                endpoint.append(isFirstParam ? "?" : "&")
+                        .append(entry.getKey())
+                        .append("=")
+                        .append(entry.getValue());
                 isFirstParam = false;
             }
         }

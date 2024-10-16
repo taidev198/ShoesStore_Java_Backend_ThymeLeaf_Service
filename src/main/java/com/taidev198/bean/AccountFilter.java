@@ -1,6 +1,7 @@
 package com.taidev198.bean;
 
 import com.taidev198.util.util.PaginationUtil;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,22 +21,21 @@ public class AccountFilter {
 
     public String buildQueryString() {
         StringBuilder queryString = new StringBuilder();
-        queryString.append("?page=").append(page)
-            .append("&order=").append(order)
-            .append("&role=").append(role)
-            .append("&sortBy=").append(sortBy)
-            .append("&query=").append(query);
+        queryString
+                .append("?page=")
+                .append(page)
+                .append("&order=")
+                .append(order)
+                .append("&role=")
+                .append(role)
+                .append("&sortBy=")
+                .append(sortBy)
+                .append("&query=")
+                .append(query);
         return queryString.toString();
     }
 
     public PaginationUtil createPaginationUtil(int totalElements, int pageSize, int displayPageNum) {
-        return new PaginationUtil(
-            totalElements,
-            pageSize,
-            page,
-            displayPageNum,
-            buildQueryString()
-        );
+        return new PaginationUtil(totalElements, pageSize, page, displayPageNum, buildQueryString());
     }
-
 }

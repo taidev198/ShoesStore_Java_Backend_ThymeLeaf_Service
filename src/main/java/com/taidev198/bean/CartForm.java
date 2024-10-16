@@ -1,6 +1,7 @@
 package com.taidev198.bean;
 
 import com.taidev198.model.ProductQuantity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
