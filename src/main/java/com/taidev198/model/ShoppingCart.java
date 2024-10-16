@@ -1,6 +1,7 @@
 package com.taidev198.model;
 
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,9 @@ public class ShoppingCart extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private int quantity;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;

@@ -1,10 +1,7 @@
 package com.taidev198.controller;
 
-import com.taidev198.bean.AccountRegistration;
-import com.taidev198.bean.ToastMessage;
-import com.taidev198.model.Enum.AccountRole;
-import com.taidev198.service.AuthService;
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.taidev198.bean.AccountRegistration;
+import com.taidev198.bean.ToastMessage;
+import com.taidev198.model.Enum.AccountRole;
+import com.taidev198.service.AuthService;
 
 @Controller
 public class RegisterController {
@@ -27,11 +28,10 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String registerAccount(
-        @Valid @ModelAttribute("accountRegistration") AccountRegistration accountRegistration,
-        BindingResult bindingResult,
-        RedirectAttributes redirectAttrs,
-        Model model
-    ) {
+            @Valid @ModelAttribute("accountRegistration") AccountRegistration accountRegistration,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttrs,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return "screens/auth/register";
         }
@@ -43,21 +43,14 @@ public class RegisterController {
             return "screens/auth/register";
         }
 
-        redirectAttrs.addFlashAttribute(
-            "toastMessages",
-            new ToastMessage("success",
-                "Đăng kí thành công")
-        );
-        model.addAttribute(
-                "linkConfirm",
-                "https://mail.google.com/mail/u/0/#inbox"
-        );
+        redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Đăng kí thành công"));
+        model.addAttribute("linkConfirm", "https://mail.google.com/mail/u/0/#inbox");
 
         return "redirect:/common/confirm-page";
     }
 
     @GetMapping("/register/confirm/{userId}")
-    public String confirmAccount(@PathVariable("userId") int userId, @RequestParam String verifyCode){
+    public String confirmAccount(@PathVariable("userId") int userId, @RequestParam String verifyCode) {
         authService.confirm(userId, verifyCode);
         return "redirect:/login";
     }

@@ -1,15 +1,17 @@
 package com.taidev198.repository;
 
-import com.taidev198.model.ShoppingCart;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import com.taidev198.model.ShoppingCart;
 
-public interface ShoppingCartsRepository extends JpaRepository<ShoppingCart, Integer > {
-    Optional<ShoppingCart> findShoppingCartByProductQuantityIdAndAccountId(Integer productQuantityId, Integer accountId);
+public interface ShoppingCartsRepository extends JpaRepository<ShoppingCart, Integer> {
+    Optional<ShoppingCart> findShoppingCartByProductQuantityIdAndAccountId(
+            Integer productQuantityId, Integer accountId);
 
     Optional<ShoppingCart> findShoppingCartByIdAndAccountId(Integer id, Integer accountId);
 

@@ -1,7 +1,9 @@
 package com.taidev198.model.Enum;
 
 public enum AccountRole {
-    ADMIN, CUSTOMER, SELLER;
+    ADMIN,
+    CUSTOMER,
+    SELLER;
 
     public int getIndex() {
         return switch (this) {

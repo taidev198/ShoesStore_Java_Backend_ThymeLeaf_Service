@@ -1,15 +1,16 @@
 package com.taidev198.model;
 
-import com.taidev198.model.Enum.OrderStatus;
+import java.util.List;
+
 import jakarta.persistence.*;
+
+import com.taidev198.model.Enum.OrderStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,9 +23,11 @@ public class Order extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private double totalPrice;
     private String phoneNumber;
     private String address;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
@@ -35,5 +38,4 @@ public class Order extends EntityBase {
     // One-to-Many relationship with OrderDetail
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
-
 }

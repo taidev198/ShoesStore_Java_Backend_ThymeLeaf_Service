@@ -1,26 +1,25 @@
 package com.taidev198.repository.customization;
 
-import com.taidev198.repository.base.BaseRepository;
-import com.taidev198.repository.base.WhereClauseType;
-import com.taidev198.repository.base.WhereElements;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
-import java.util.Optional;
+import com.taidev198.repository.base.BaseRepository;
+import com.taidev198.repository.base.WhereClauseType;
+import com.taidev198.repository.base.WhereElements;
 
 public interface CustomRepository<T, ID, K extends BaseRepository<T>> {
     K getRepository();
 
     default Optional<T> findByIdWithRelationship(ID id, String... relationships) {
-        return getRepository().fetchAllDataWithoutPagination(
-                List.of(
-                    new WhereElements("id", id, WhereClauseType.EQUAL)
-                ),
-                null,
-                relationships)
-            .stream().findFirst();
+        return getRepository()
+                .fetchAllDataWithoutPagination(
+                        List.of(new WhereElements("id", id, WhereClauseType.EQUAL)), null, relationships)
+                .stream()
+                .findFirst();
     }
 
     default List<T> findAllWithRelationship(String... relationships) {

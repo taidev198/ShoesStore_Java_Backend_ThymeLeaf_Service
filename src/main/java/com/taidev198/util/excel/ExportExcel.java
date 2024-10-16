@@ -1,35 +1,34 @@
 package com.taidev198.util.excel;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xddf.usermodel.chart.AxisCrossBetween;
 import org.apache.poi.xddf.usermodel.chart.AxisPosition;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.LegendPosition;
-import org.apache.poi.xddf.usermodel.chart.MarkerStyle;
 import org.apache.poi.xddf.usermodel.chart.XDDFCategoryAxis;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartLegend;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSourcesFactory;
-import org.apache.poi.xddf.usermodel.chart.XDDFLineChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
-import org.apache.poi.xddf.usermodel.chart.XDDFPieChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFValueAxis;
 import org.apache.poi.xssf.usermodel.*;
 
 import com.taidev198.bean.RevenueInfo;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.servlet.http.HttpServletResponse;
-import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -315,19 +314,15 @@ public class ExportExcel {
         if (!sheets.isEmpty() && sheets.size() > sheetIndex) {
             XSSFSheet sheet = sheets.get(sheetIndex);
 
-            CellRangeAddress cellRangeAddress = new CellRangeAddress(
-                startRow,
-                endRow,
-                startCol,
-                endCol
-            );
+            CellRangeAddress cellRangeAddress = new CellRangeAddress(startRow, endRow, startCol, endCol);
 
             // Gộp ô
             sheet.addMergedRegion(cellRangeAddress);
         }
     }
 
-    public void addMergedCell(int sheetIndex, String value, int startRow, int startCol, int endRow, int endCol, XSSFCellStyle style) {
+    public void addMergedCell(
+            int sheetIndex, String value, int startRow, int startCol, int endRow, int endCol, XSSFCellStyle style) {
         // Gộp các ô
         mergeCells(sheetIndex, startRow, startCol, endRow, endCol);
 
@@ -340,13 +335,13 @@ public class ExportExcel {
             }
             Cell cell = row.createCell(startCol);
             cell.setCellValue(value);
-            cell.setCellStyle(style);  // hoặc sử dụng bất kỳ style nào bạn muốn
+            cell.setCellStyle(style); // hoặc sử dụng bất kỳ style nào bạn muốn
         }
     }
 
     public void export(HttpServletResponse response, String fileName) throws IOException {
-        for(int i = 0; i < sheets.size() ; i++){
-            XSSFSheet  sheet = sheets.get(i);
+        for (int i = 0; i < sheets.size(); i++) {
+            XSSFSheet sheet = sheets.get(i);
             for (int colIndex = 0; colIndex < sheet.getRow(0).getLastCellNum(); colIndex++) {
                 sheet.autoSizeColumn(colIndex);
             }
@@ -359,7 +354,8 @@ public class ExportExcel {
         workbook.close();
     }
 
-    public void createDailyRevenueColumnChart(int sheetIndex, int startRow, int endRow, int startCol, int endCol, Map<String, RevenueInfo> dailyRevenue) {
+    public void createDailyRevenueColumnChart(
+            int sheetIndex, int startRow, int endRow, int startCol, int endCol, Map<String, RevenueInfo> dailyRevenue) {
 
         XSSFSheet sheet = sheets.get(sheetIndex);
 
@@ -383,10 +379,12 @@ public class ExportExcel {
         }
 
         // Define the data for the chart
-        XDDFDataSource<String> days = XDDFDataSourcesFactory.fromStringCellRange(sheet,
-                new CellRangeAddress(startRow, endRow, startCol, startCol)); // Days in specified column range
-        XDDFNumericalDataSource<Double> revenues = XDDFDataSourcesFactory.fromNumericCellRange(sheet,
-                new CellRangeAddress(startRow, endRow, startCol + 1, startCol + 1)); // Revenues in specified column range
+        XDDFDataSource<String> days = XDDFDataSourcesFactory.fromStringCellRange(
+                sheet, new CellRangeAddress(startRow, endRow, startCol, startCol)); // Days in specified column range
+        XDDFNumericalDataSource<Double> revenues = XDDFDataSourcesFactory.fromNumericCellRange(
+                sheet,
+                new CellRangeAddress(
+                        startRow, endRow, startCol + 1, startCol + 1)); // Revenues in specified column range
 
         // Create a data series for the chart
         XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.LEFT);
@@ -402,7 +400,13 @@ public class ExportExcel {
         chart.plot(data);
     }
 
-    public void createMonthlyRevenuePieChart(int sheetIndex, int startRow, int endRow, int startCol, int endCol, Map<String, RevenueInfo> monthlyRevenue) {
+    public void createMonthlyRevenuePieChart(
+            int sheetIndex,
+            int startRow,
+            int endRow,
+            int startCol,
+            int endCol,
+            Map<String, RevenueInfo> monthlyRevenue) {
         XSSFSheet sheet = sheets.get(sheetIndex);
 
         // Xác định vị trí của biểu đồ tròn trên trang tính
@@ -430,10 +434,13 @@ public class ExportExcel {
         }
 
         // Xác định dữ liệu cho biểu đồ tròn
-        XDDFDataSource<String> months = XDDFDataSourcesFactory.fromStringCellRange(sheet,
+        XDDFDataSource<String> months = XDDFDataSourcesFactory.fromStringCellRange(
+                sheet,
                 new CellRangeAddress(startRow, endRow, startCol, startCol)); // Tháng trong phạm vi cột được chỉ định
-        XDDFNumericalDataSource<Double> revenues = XDDFDataSourcesFactory.fromNumericCellRange(sheet,
-                new CellRangeAddress(startRow, endRow, startCol + 1, startCol + 1)); // Doanh thu trong phạm vi cột được chỉ định
+        XDDFNumericalDataSource<Double> revenues = XDDFDataSourcesFactory.fromNumericCellRange(
+                sheet,
+                new CellRangeAddress(
+                        startRow, endRow, startCol + 1, startCol + 1)); // Doanh thu trong phạm vi cột được chỉ định
 
         // Tạo chuỗi dữ liệu cho biểu đồ tròn
         XDDFChartData data = chart.createData(ChartTypes.PIE, null, null);
@@ -442,5 +449,4 @@ public class ExportExcel {
 
         chart.plot(data);
     }
-
 }

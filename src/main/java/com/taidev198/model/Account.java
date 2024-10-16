@@ -1,20 +1,23 @@
 package com.taidev198.model;
 
-import com.taidev198.model.Enum.AccountRole;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
+import com.taidev198.model.Enum.AccountRole;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
@@ -27,14 +30,19 @@ public class Account extends EntityBase implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String email;
     private String displayName;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private AccountRole role;
+
     private String fullName;
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateOfBirth;
+
     private String address;
     private String phoneNumber;
     private Boolean gender;
@@ -86,4 +94,3 @@ public class Account extends EntityBase implements UserDetails {
         return isActivated == null || isActivated;
     }
 }
-

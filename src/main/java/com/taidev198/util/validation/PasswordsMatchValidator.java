@@ -1,10 +1,10 @@
 package com.taidev198.util.validation;
 
-import com.taidev198.annotation.PasswordsMatch;
-import com.taidev198.bean.AccountRegistration;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import com.taidev198.annotation.PasswordsMatch;
+import com.taidev198.bean.AccountRegistration;
 
 public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMatch, AccountRegistration> {
 
@@ -17,4 +17,3 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMat
         return accountRegistration.getPassword().equals(accountRegistration.getConfirmPassword());
     }
 }
-

@@ -1,20 +1,23 @@
 package com.taidev198.model;
 
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
+
+import jakarta.persistence.*;
+
+import org.hibernate.annotations.Type;
+
 import com.taidev198.model.Embeddables.ProductDescription;
 import com.taidev198.model.Enum.ProductGender;
+
 import io.hypersistence.utils.hibernate.type.json.JsonType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
-
-import java.text.NumberFormat;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
 
 @Entity
 @Getter
@@ -27,14 +30,18 @@ public class ProductDetail extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private int originPrice;
     private Integer discount;
     private int price;
+
     @Enumerated(EnumType.STRING)
     private ProductGender gender;
+
     @Type(JsonType.class)
     @Column(columnDefinition = "json")
     private ProductDescription description;
+
     private LocalDateTime deletedAt;
 
     @OneToMany(mappedBy = "productDetail", fetch = FetchType.LAZY)
@@ -56,9 +63,7 @@ public class ProductDetail extends EntityBase {
     private Constant style;
 
     public boolean isSoldOut() {
-        return quantities.stream()
-            .mapToInt(ProductQuantity::getQuantity)
-            .sum() == 0;
+        return quantities.stream().mapToInt(ProductQuantity::getQuantity).sum() == 0;
     }
 
     public String getProductDetailUrl() {
@@ -76,5 +81,4 @@ public class ProductDetail extends EntityBase {
         NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
         return numberFormat.format(discountedPrice) + " VND";
     }
-
 }

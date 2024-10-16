@@ -1,9 +1,7 @@
 package com.taidev198.model;
 
-
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +19,9 @@ public class OrderDetail extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private int price;
+
     @Column(name = "count")
     private int quantity;
 
@@ -32,5 +32,4 @@ public class OrderDetail extends EntityBase {
     @ManyToOne
     @JoinColumn(name = "product_quantity_id")
     private ProductQuantity productQuantity;
-
 }

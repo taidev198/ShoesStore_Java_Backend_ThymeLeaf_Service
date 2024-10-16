@@ -29,7 +29,7 @@ public enum WhereClauseType {
         return this == LIKE_IGNORE_CASE;
     }
 
-    public boolean isNoNeedParamType(){
+    public boolean isNoNeedParamType() {
         return this == IS_NULL || this == IS_NOT_NULL;
     }
 }

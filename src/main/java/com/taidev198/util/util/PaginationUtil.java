@@ -1,7 +1,5 @@
 package com.taidev198.util.util;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +68,7 @@ public class PaginationUtil {
     }
 
     public String getPageUrl(int pageNumber) {
-        if(buildQueryString.contains("?")){
+        if (buildQueryString.contains("?")) {
             return buildQueryString + "&page=" + pageNumber;
         }
         return buildQueryString + "?page=" + pageNumber;

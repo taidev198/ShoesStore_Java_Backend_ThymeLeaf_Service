@@ -1,31 +1,30 @@
 package com.taidev198.controller;
 
-import com.taidev198.bean.ProductDetailColors;
-import com.taidev198.bean.ProductDetailInfo;
-import com.taidev198.bean.ToastMessage;
-import com.taidev198.bean.CartForm;
-import com.taidev198.service.ProductService;
-import com.taidev198.util.exception.NotFoundObjectException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.taidev198.bean.CartForm;
+import com.taidev198.bean.ProductDetailColors;
+import com.taidev198.bean.ProductDetailInfo;
 import com.taidev198.bean.ProductFilterInfo;
+import com.taidev198.bean.ToastMessage;
 import com.taidev198.service.ConstantService;
 import com.taidev198.service.FilterService;
+import com.taidev198.service.ProductService;
+import com.taidev198.util.exception.NotFoundObjectException;
 import com.taidev198.util.util.PaginationUtil;
 
 @Controller
@@ -44,8 +43,10 @@ public class ProductsController {
     @GetMapping
     public String index(
             @RequestParam(name = "filterStyleString", required = false, defaultValue = "") String filterStyleString,
-            @RequestParam(name = "filterCategoryString", required = false, defaultValue = "") String filterCategoryString,
-            @RequestParam(name = "filterMaterialString", required = false, defaultValue = "") String filterMaterialString,
+            @RequestParam(name = "filterCategoryString", required = false, defaultValue = "")
+                    String filterCategoryString,
+            @RequestParam(name = "filterMaterialString", required = false, defaultValue = "")
+                    String filterMaterialString,
             @RequestParam(name = "gender", required = false, defaultValue = "1") Integer filterGender,
             @RequestParam(name = "filterColorString", required = false, defaultValue = "") String filterColorString,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
@@ -92,8 +93,12 @@ public class ProductsController {
                 size,
                 page,
                 5,
-                buildQueryString(filterStyleString, filterCategoryString, filterMaterialString,
-                        filterColorString, filterGender));
+                buildQueryString(
+                        filterStyleString,
+                        filterCategoryString,
+                        filterMaterialString,
+                        filterColorString,
+                        filterGender));
 
         model.addAttribute("productDetails", productFilterPage.getContent());
         model.addAttribute("pagination", paginationUtil);
@@ -113,7 +118,11 @@ public class ProductsController {
         return "screens/products/index";
     }
 
-    private String buildQueryString(String filterStyleString, String filterCategoryString, String filterMaterialString, String filterColorString,
+    private String buildQueryString(
+            String filterStyleString,
+            String filterCategoryString,
+            String filterMaterialString,
+            String filterColorString,
             Integer gender) {
         return UriComponentsBuilder.fromUriString("/products")
                 .queryParam("filterStyleString", filterStyleString)

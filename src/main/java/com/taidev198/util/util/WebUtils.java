@@ -1,13 +1,15 @@
 package com.taidev198.util.util;
 
-import com.taidev198.util.constant.CommonConstant;
+import java.util.Map;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Map;
+import com.taidev198.util.constant.CommonConstant;
 
 public class WebUtils {
     /*
@@ -15,7 +17,9 @@ public class WebUtils {
      */
     public static class Sessions {
         private static HttpSession getSession() {
-            return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
+            return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                    .getRequest()
+                    .getSession();
         }
 
         public static void setCurrentGetUrl(String url) {
@@ -53,9 +57,7 @@ public class WebUtils {
             var session = getSession();
             session.getAttributeNames().asIterator().forEachRemaining(session::removeAttribute);
         }
-
     }
-
 
     /*
      * Cookie
@@ -66,14 +68,15 @@ public class WebUtils {
         }
 
         public static Cookie[] getCookies() {
-            return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getCookies();
+            return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                    .getRequest()
+                    .getCookies();
         }
 
         public static Cookie getCookie(String name) {
             Cookie[] cookies = getCookies();
             if (CommonUtils.isNotEmptyOrNullList(cookies)) {
-                for (Cookie cookie : cookies)
-                    if (cookie.getName().equals(name)) return cookie;
+                for (Cookie cookie : cookies) if (cookie.getName().equals(name)) return cookie;
             }
             return null;
         }
@@ -93,7 +96,5 @@ public class WebUtils {
         }
     }
 
-
-    private WebUtils() {
-    }
+    private WebUtils() {}
 }

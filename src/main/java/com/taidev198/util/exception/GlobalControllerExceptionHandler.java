@@ -1,9 +1,7 @@
 package com.taidev198.util.exception;
 
-import com.taidev198.bean.ToastMessage;
-import com.taidev198.util.constant.CommonConstant;
-import com.taidev198.util.constant.ErrorMessageConstant;
-import com.taidev198.util.util.WebUtils;
+import java.rmi.ServerError;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.ui.Model;
@@ -14,7 +12,10 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.rmi.ServerError;
+import com.taidev198.bean.ToastMessage;
+import com.taidev198.util.constant.CommonConstant;
+import com.taidev198.util.constant.ErrorMessageConstant;
+import com.taidev198.util.util.WebUtils;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -32,7 +33,8 @@ public class GlobalControllerExceptionHandler {
         if (e instanceof ForbiddenException || e instanceof UnauthorizedException) {
             String currentUrl = WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_GET_URL, String.class);
             if (currentUrl == null) currentUrl = "/";
-            redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", ErrorMessageConstant.FORBIDDEN));
+            redirectAttributes.addFlashAttribute(
+                    "toastMessages", new ToastMessage("error", ErrorMessageConstant.FORBIDDEN));
             return "redirect:" + currentUrl;
         }
         model.addAttribute("message", ((RuntimeException) e).getMessage());
@@ -44,16 +46,19 @@ public class GlobalControllerExceptionHandler {
     public String handleAccessDeniedException(AccessDeniedException e, RedirectAttributes redirectAttributes) {
         String currentUrl = WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_GET_URL, String.class);
         if (currentUrl == null) currentUrl = "/";
-        redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", ErrorMessageConstant.FORBIDDEN));
+        redirectAttributes.addFlashAttribute(
+                "toastMessages", new ToastMessage("error", ErrorMessageConstant.FORBIDDEN));
         return "redirect:" + currentUrl;
     }
 
     // AuthenticationCredentialsNotFoundException
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-    public String handleAuthenticationCredentialsNotFoundException(AuthenticationCredentialsNotFoundException e, RedirectAttributes redirectAttributes) {
+    public String handleAuthenticationCredentialsNotFoundException(
+            AuthenticationCredentialsNotFoundException e, RedirectAttributes redirectAttributes) {
         String currentUrl = WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_GET_URL, String.class);
         if (currentUrl == null) currentUrl = "/";
-        redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", ErrorMessageConstant.FORBIDDEN));
+        redirectAttributes.addFlashAttribute(
+                "toastMessages", new ToastMessage("error", ErrorMessageConstant.FORBIDDEN));
         return "redirect:" + currentUrl;
     }
 

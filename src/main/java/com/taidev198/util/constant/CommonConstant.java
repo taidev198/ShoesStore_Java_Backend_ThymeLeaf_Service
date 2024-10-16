@@ -14,6 +14,5 @@ public class CommonConstant {
     public static final String SHOPPING_CART_WRAPPER = "shopping_cart_wrapper";
     public static final String TOTAL_PRICE = "total_price";
 
-    private CommonConstant() {
-    }
+    private CommonConstant() {}
 }
