@@ -30,7 +30,7 @@ public class AccountActivityLogger {
     @Autowired
     private AccountsService accountsService;
 
-    @Pointcut("execution(* com.taidev198.controller.LoginController.*(..))")
+    @Pointcut("execution(* com.taidev198.controller.common.LoginController.*(..))")
     public void onAccountActivityLogger() {}
 
     @AfterReturning("onAccountActivityLogger()")

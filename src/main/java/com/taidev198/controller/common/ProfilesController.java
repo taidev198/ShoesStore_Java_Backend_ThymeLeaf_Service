@@ -1,4 +1,4 @@
-package com.taidev198.controller;
+package com.taidev198.controller.common;
 
 import jakarta.validation.Valid;
 
