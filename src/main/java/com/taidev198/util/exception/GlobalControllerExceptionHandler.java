@@ -13,9 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.taidev198.bean.ToastMessage;
+import com.taidev198.util.WebUtils;
 import com.taidev198.util.constant.CommonConstant;
 import com.taidev198.util.constant.ErrorMessageConstant;
-import com.taidev198.util.util.WebUtils;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -80,6 +80,12 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler({Exception.class, HttpServerErrorException.InternalServerError.class, ServerError.class})
     public String handleException(Exception e, Model model) {
         model.addAttribute("message", "500 internal server error with message: " + e.getMessage());
+        return "error";
+    }
+
+    @ExceptionHandler(PermisticLockingFailureException.class)
+    public String handleAttemptException(PermisticLockingFailureException e, Model model) {
+        model.addAttribute("message", e.getMessage());
         return "error";
     }
 }

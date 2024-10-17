@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.taidev198.model.ProductDetail;
 import com.taidev198.model.ProductQuantity;
-import com.taidev198.util.util.CommonUtils;
+import com.taidev198.util.CommonUtils;
 
 import lombok.RequiredArgsConstructor;
 

@@ -16,16 +16,22 @@ import com.taidev198.bean.ToastMessage;
 import com.taidev198.model.Account;
 import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.service.AuthService;
+import com.taidev198.service.impl.AccountsServiceImpl;
+import com.taidev198.util.CommonUtils;
+import com.taidev198.util.WebUtils;
 import com.taidev198.util.constant.CommonConstant;
-import com.taidev198.util.util.CommonUtils;
-import com.taidev198.util.util.WebUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
+
     private final AuthService authService;
+    private final AccountsServiceImpl accountsService;
+    private int attempt = 0;
 
     @GetMapping("/login")
     public String view(Model model) {
@@ -43,6 +49,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@ModelAttribute("loginRequest") LoginRequest loginRequest, Model model) {
         try {
+            attempt++;
             var credential = authService.login(loginRequest);
             // Save token to cookie
             WebUtils.Cookies.setCookie(CommonConstant.ACCESS_TOKEN, credential.getAccessToken());
@@ -63,8 +70,19 @@ public class LoginController {
             // Redirect to previous URL if current user role is customer
             return account.getRole() == AccountRole.CUSTOMER ? redirectPreviousUrl() : "redirect:/admin/statistic";
         } catch (BadCredentialsException ex) {
-            model.addAttribute(
-                    "toastMessages", new ToastMessage("error", "Địa chỉ email hoặc mật khẩu không chính xác!"));
+            if (attempt == 3) {
+                // reset attempt to next time
+                attempt = 0;
+                accountsService.toggleAccountActivation(
+                        accountsService
+                                .findAccountByEmail(loginRequest.getEmail())
+                                .getId(),
+                        false);
+                model.addAttribute(
+                        "toastMessages", new ToastMessage("error", "Tai khoan bi khoa do nhap sai mat khau 3 lan!"));
+            } else
+                model.addAttribute(
+                        "toastMessages", new ToastMessage("error", " Mật khẩu không chính xác " + attempt + " lan!"));
             return "screens/auth/login";
         } catch (InternalAuthenticationServiceException ex) {
             model.addAttribute("toastMessages", new ToastMessage("error", "Tài khoản không tồn tại!"));

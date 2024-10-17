@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.taidev198.bean.AccountInfo;
 import com.taidev198.model.Enum.AccountRole;
+import com.taidev198.util.WebUtils;
 import com.taidev198.util.constant.CommonConstant;
-import com.taidev198.util.util.WebUtils;
 
 @Controller
 public class HomeController {

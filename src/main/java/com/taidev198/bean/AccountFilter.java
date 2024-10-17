@@ -1,6 +1,6 @@
 package com.taidev198.bean;
 
-import com.taidev198.util.util.PaginationUtil;
+import com.taidev198.util.PaginationUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

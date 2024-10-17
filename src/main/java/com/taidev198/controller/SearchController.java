@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.taidev198.model.ProductDetail;
 import com.taidev198.service.ProductService;
-import com.taidev198.util.util.PaginationUtil;
+import com.taidev198.util.PaginationUtil;
 
 @Controller
 public class SearchController {

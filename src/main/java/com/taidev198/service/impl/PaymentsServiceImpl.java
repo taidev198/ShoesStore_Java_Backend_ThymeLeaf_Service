@@ -21,9 +21,9 @@ import com.taidev198.repository.OrdersRepository;
 import com.taidev198.repository.ProductQuantitiesRepository;
 import com.taidev198.repository.ShoppingCartsRepository;
 import com.taidev198.service.PaymentsService;
+import com.taidev198.util.CommonUtils;
 import com.taidev198.util.constant.CommonConstant;
 import com.taidev198.util.exception.BadRequestException;
-import com.taidev198.util.util.CommonUtils;
 
 import lombok.RequiredArgsConstructor;
 

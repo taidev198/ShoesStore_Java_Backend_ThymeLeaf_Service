@@ -12,11 +12,11 @@ import com.taidev198.model.Account;
 import com.taidev198.repository.AccountRepository;
 import com.taidev198.repository.RefreshTokenRepository;
 import com.taidev198.service.JwtService;
+import com.taidev198.util.CommonUtils;
 import com.taidev198.util.constant.CommonConstant;
 import com.taidev198.util.constant.ErrorMessageConstant;
 import com.taidev198.util.exception.ForbiddenException;
 import com.taidev198.util.exception.UnauthorizedException;
-import com.taidev198.util.util.CommonUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

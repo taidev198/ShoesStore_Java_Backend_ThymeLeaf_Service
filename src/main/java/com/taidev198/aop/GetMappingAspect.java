@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.taidev198.util.util.CommonUtils;
-import com.taidev198.util.util.WebUtils;
+import com.taidev198.util.CommonUtils;
+import com.taidev198.util.WebUtils;
 
 @Component
 @Aspect

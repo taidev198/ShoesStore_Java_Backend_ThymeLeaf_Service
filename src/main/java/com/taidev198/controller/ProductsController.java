@@ -24,8 +24,8 @@ import com.taidev198.bean.ToastMessage;
 import com.taidev198.service.ConstantService;
 import com.taidev198.service.FilterService;
 import com.taidev198.service.ProductService;
+import com.taidev198.util.PaginationUtil;
 import com.taidev198.util.exception.NotFoundObjectException;
-import com.taidev198.util.util.PaginationUtil;
 
 @Controller
 @RequestMapping("/products")

@@ -1,4 +1,4 @@
-package com.taidev198.util.aspect;
+package com.taidev198.aop;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

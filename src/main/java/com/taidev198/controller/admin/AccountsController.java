@@ -18,7 +18,7 @@ import com.taidev198.model.Account;
 import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.service.AccountsService;
 import com.taidev198.service.AuthService;
-import com.taidev198.util.util.PaginationUtil;
+import com.taidev198.util.PaginationUtil;
 
 import lombok.RequiredArgsConstructor;
 

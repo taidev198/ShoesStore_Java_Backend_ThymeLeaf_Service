@@ -1,4 +1,4 @@
-package com.taidev198.util.util;
+package com.taidev198.util;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
