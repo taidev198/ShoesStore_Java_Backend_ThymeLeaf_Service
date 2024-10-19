@@ -1,5 +1,7 @@
 package com.taidev198.controller.customer;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -14,11 +16,12 @@ import com.taidev198.bean.PayForm;
 import com.taidev198.bean.ShoppingCartWrapper;
 import com.taidev198.bean.ToastMessage;
 import com.taidev198.model.Account;
+import com.taidev198.model.Embeddables.PaymentDetail;
 import com.taidev198.service.PaymentsService;
+import com.taidev198.service.VNPayService;
 import com.taidev198.util.CommonUtils;
 import com.taidev198.util.WebUtils;
 import com.taidev198.util.constant.CommonConstant;
-import com.taidev198.util.exception.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorizeCustomer
 public class PaymentsController {
     private final PaymentsService paymentsService;
+    private final VNPayService vnPayService;
 
     @GetMapping
     public String showPaymentPage(
@@ -66,36 +70,48 @@ public class PaymentsController {
             BindingResult bindingResult,
             @CurrentAccount Account currentAccount,
             RedirectAttributes redirectAttributes,
-            Model model) {
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("payForm", payForm);
             return "screens/payments/new";
         }
 
-        try {
-            var shoppingCartWrapper =
-                    WebUtils.Sessions.getAttribute(CommonConstant.SHOPPING_CART_WRAPPER, ShoppingCartWrapper.class);
-            var totalPrice = WebUtils.Sessions.getAttribute(CommonConstant.TOTAL_PRICE, Integer.class);
-            if (shoppingCartWrapper != null
-                    && CommonUtils.isNotEmptyOrNullList(shoppingCartWrapper.getShoppingCartInfos())
-                    && totalPrice != null) {
-                paymentsService.processPayments(
-                        shoppingCartWrapper.getShoppingCartInfos(), payForm, currentAccount, totalPrice);
-                redirectAttributes.addFlashAttribute(
-                        "toastMessages", new ToastMessage("success", "Đặt hàng thành công!"));
+        //        try {
+        //            var shoppingCartWrapper =
+        //                    WebUtils.Sessions.getAttribute(CommonConstant.SHOPPING_CART_WRAPPER,
+        // ShoppingCartWrapper.class);
+        //            var totalPrice = WebUtils.Sessions.getAttribute(CommonConstant.TOTAL_PRICE, Integer.class);
+        //            if (shoppingCartWrapper != null
+        //                    && CommonUtils.isNotEmptyOrNullList(shoppingCartWrapper.getShoppingCartInfos())
+        //                    && totalPrice != null) {
+        //                paymentsService.processPayments(
+        //                        shoppingCartWrapper.getShoppingCartInfos(), payForm, currentAccount, totalPrice);
+        //                redirectAttributes.addFlashAttribute(
+        //                        "toastMessages", new ToastMessage("success", "Đặt hàng thành công!"));
+        //
+        //                // Remove shopping cart wrapper in session
+        //                WebUtils.Sessions.removeAttribute(CommonConstant.SHOPPING_CART_WRAPPER);
+        //                WebUtils.Sessions.removeAttribute(CommonConstant.TOTAL_PRICE);
+        //                return "redirect:/customer/orders?status=all"; // Redirect to order page
+        //            } else throw new BadRequestException("Giỏ hàng trống, bạn vui lòng thanh toán từ giỏ hàng!");
+        //        } catch (Exception e) {
+        //            // Back to cart page if error
+        //            redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
+        //            WebUtils.Sessions.removeAttribute(CommonConstant.SHOPPING_CART_WRAPPER);
+        //            WebUtils.Sessions.removeAttribute(CommonConstant.TOTAL_PRICE);
+        //            return "redirect:/carts";
+        //        }
+        return "redirect:"
+                + vnPayService.createPaymentRequest(
+                        PaymentDetail.builder().amount(267890).bankCode("NCB").build());
+    }
 
-                // Remove shopping cart wrapper in session
-                WebUtils.Sessions.removeAttribute(CommonConstant.SHOPPING_CART_WRAPPER);
-                WebUtils.Sessions.removeAttribute(CommonConstant.TOTAL_PRICE);
-                return "redirect:/customer/orders?status=all"; // Redirect to order page
-            } else throw new BadRequestException("Giỏ hàng trống, bạn vui lòng thanh toán từ giỏ hàng!");
-        } catch (Exception e) {
-            // Back to cart page if error
-            redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
-            WebUtils.Sessions.removeAttribute(CommonConstant.SHOPPING_CART_WRAPPER);
-            WebUtils.Sessions.removeAttribute(CommonConstant.TOTAL_PRICE);
-            return "redirect:/carts";
-        }
+    @GetMapping("/vn-pay-callback")
+    public String showPaymentSuccess(HttpServletRequest request, Model model) {
+        System.out.println(request.getParameter("vnp_ResponseCode") + "testtttt");
+        return "screens/payments/success";
     }
 
     @GetMapping("/{quantityId}/{quantity}")
