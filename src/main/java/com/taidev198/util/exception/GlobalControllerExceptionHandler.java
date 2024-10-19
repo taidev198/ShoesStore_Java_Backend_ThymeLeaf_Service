@@ -88,4 +88,10 @@ public class GlobalControllerExceptionHandler {
         model.addAttribute("message", e.getMessage());
         return "error";
     }
+
+    @ExceptionHandler(RateLimitException.class)
+    public String handleRateLimitException(RateLimitException e, Model model) {
+        model.addAttribute("message", "You has reached to rate limit access" + e.getMessage());
+        return "error";
+    }
 }

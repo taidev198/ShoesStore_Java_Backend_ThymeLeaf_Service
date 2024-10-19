@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.taidev198.annotation.WithRateLimitProtection;
 import com.taidev198.bean.AccountInfo;
 import com.taidev198.bean.LoginRequest;
 import com.taidev198.bean.ToastMessage;
@@ -33,6 +34,7 @@ public class LoginController {
     private final AccountsServiceImpl accountsService;
     private int attempt = 0;
 
+    @WithRateLimitProtection
     @GetMapping("/login")
     public String view(Model model) {
         var currentAccount = WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_USER, AccountInfo.class);
