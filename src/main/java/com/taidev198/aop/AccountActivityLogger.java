@@ -58,21 +58,21 @@ public class AccountActivityLogger {
         //        }
         System.out.println(NetworkAddressUtils.GetAddress("ip"));
         System.out.println(NetworkAddressUtils.GetMacAddress());
-        return joinPoint.getArgs()[0];
+        return joinPoint;
     }
 
-    @Around("com.taidev198.CommonPointcuts.businessService()")
-    public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
-        int numAttempts = 0;
-        PermisticLockingFailureException lockFailureException;
-        do {
-            numAttempts++;
-            try {
-                return pjp.proceed();
-            } catch (PermisticLockingFailureException ex) {
-                lockFailureException = ex;
-            }
-        } while (numAttempts <= this.maxRetries);
-        throw lockFailureException;
-    }
+//    @Around("com.taidev198.CommonPointcuts.businessService()")
+//    public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
+//        int numAttempts = 0;
+//        PermisticLockingFailureException lockFailureException;
+//        do {
+//            numAttempts++;
+//            try {
+//                return pjp.proceed();
+//            } catch (PermisticLockingFailureException ex) {
+//                lockFailureException = ex;
+//            }
+//        } while (numAttempts <= this.maxRetries);
+//        throw lockFailureException;
+//    }
 }

@@ -56,6 +56,7 @@ public class JwtAuthFilterConfig extends OncePerRequestFilter {
 
             filterChain.doFilter(req, resp);
         } catch (UnauthorizedException e) {
+            //try it with refresh token
             try {
                 if (e.getMessage().equalsIgnoreCase(ErrorMessageConstant.EXPIRED_TOKEN)
                         && refreshToken != null
@@ -80,7 +81,7 @@ public class JwtAuthFilterConfig extends OncePerRequestFilter {
     }
 
     private void setAuthentication(String accessToken, HttpServletRequest req) {
-        Account userDetails = jwtService.getAccountFromToken(accessToken);
+        Account userDetails = jwtService.getAccountFromToken(accessToken);//get account from token
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, accessToken, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));

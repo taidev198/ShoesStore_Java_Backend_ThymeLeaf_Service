@@ -45,6 +45,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public Credential generateToken(int accountId) {
         String accessToken = generateAccessToken(accountId);
+        System.out.println(accessToken);
         return Credential.builder()
                 .accessToken(accessToken)
                 .refreshToken(generateRefreshToken(accountId))

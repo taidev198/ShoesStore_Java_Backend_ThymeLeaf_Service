@@ -1,5 +1,6 @@
 package com.taidev198.controller.admin;
 
+import com.taidev198.annotation.PreAuthorizeAdmin;
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -22,7 +23,8 @@ import com.taidev198.util.PaginationUtil;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller("adminAccountsController")
+@Controller
+@PreAuthorizeAdmin
 @RequestMapping("/admin/accounts")
 @RequiredArgsConstructor
 public class AccountsController {

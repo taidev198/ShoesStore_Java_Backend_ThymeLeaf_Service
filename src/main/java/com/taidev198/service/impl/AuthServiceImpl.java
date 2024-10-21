@@ -47,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Account account = (Account) authentication.getPrincipal();
+        System.out.println(account.getAuthorities().toString());
         Credential response = jwtService.generateToken(account.getId());
         // Save the refresh token
         refreshTokenRepository.save(RefreshToken.builder()
