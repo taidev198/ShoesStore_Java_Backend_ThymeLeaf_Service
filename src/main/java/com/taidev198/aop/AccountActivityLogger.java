@@ -1,5 +1,6 @@
 package com.taidev198.aop;
 
+import com.taidev198.util.NetworkAddressUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -55,6 +56,8 @@ public class AccountActivityLogger {
         //                    .build()
         //            );
         //        }
+        System.out.println(NetworkAddressUtils.GetAddress("ip"));
+        System.out.println(NetworkAddressUtils.GetMacAddress());
         return joinPoint.getArgs()[0];
     }
 
