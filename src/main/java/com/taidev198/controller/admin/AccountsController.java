@@ -1,6 +1,5 @@
 package com.taidev198.controller.admin;
 
-import com.taidev198.annotation.PreAuthorizeAdmin;
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.taidev198.annotation.CurrentAccount;
+import com.taidev198.annotation.PreAuthorizeAdmin;
 import com.taidev198.bean.AccountActivateForm;
 import com.taidev198.bean.AccountFilter;
 import com.taidev198.bean.AccountRegistration;
@@ -24,9 +24,9 @@ import com.taidev198.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 @PreAuthorizeAdmin
 @RequestMapping("/admin/accounts")
-@RequiredArgsConstructor
 public class AccountsController {
     private final AccountsService accountService;
     private final AuthService authService;

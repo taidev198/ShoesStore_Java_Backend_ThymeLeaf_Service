@@ -1,10 +1,7 @@
 package com.taidev198.aop;
 
-import com.taidev198.util.NetworkAddressUtils;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.taidev198.service.AccountActivityService;
 import com.taidev198.service.AccountsService;
-import com.taidev198.util.exception.PermisticLockingFailureException;
+import com.taidev198.util.NetworkAddressUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,18 +58,18 @@ public class AccountActivityLogger {
         return joinPoint;
     }
 
-//    @Around("com.taidev198.CommonPointcuts.businessService()")
-//    public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
-//        int numAttempts = 0;
-//        PermisticLockingFailureException lockFailureException;
-//        do {
-//            numAttempts++;
-//            try {
-//                return pjp.proceed();
-//            } catch (PermisticLockingFailureException ex) {
-//                lockFailureException = ex;
-//            }
-//        } while (numAttempts <= this.maxRetries);
-//        throw lockFailureException;
-//    }
+    //    @Around("com.taidev198.CommonPointcuts.businessService()")
+    //    public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
+    //        int numAttempts = 0;
+    //        PermisticLockingFailureException lockFailureException;
+    //        do {
+    //            numAttempts++;
+    //            try {
+    //                return pjp.proceed();
+    //            } catch (PermisticLockingFailureException ex) {
+    //                lockFailureException = ex;
+    //            }
+    //        } while (numAttempts <= this.maxRetries);
+    //        throw lockFailureException;
+    //    }
 }

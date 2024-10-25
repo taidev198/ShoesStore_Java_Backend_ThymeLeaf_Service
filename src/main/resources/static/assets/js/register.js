@@ -5,6 +5,25 @@ document.getElementById('confirm_password').addEventListener('blur', validateCon
 document.getElementById('full_name').addEventListener('blur', validateFullName);
 document.getElementById('phone_number').addEventListener('blur', validatePhoneNumber);
 
+const btnSubmit = document.getElementById('btn_register');
+const email = document.getElementById('email')
+const address = document.getElementById('address')
+const phone_number = document.getElementById('phone_number')
+const full_name = document.getElementById('full_name')
+const password = document.getElementById('password')
+const confirm_password = document.getElementById('confirm_password')
+btnSubmit.disabled = true;
+
+function checkFullFill() {
+    btnSubmit.disabled =!(email.value
+        && phone_number.value
+        && full_name.value
+        && password.value
+        && confirm_password.value
+        && address.value);
+    console.log(btnSubmit.disabled);
+}
+
 function validateEmailField() {
     const email = document.getElementById('email').value;
     const emailError = document.getElementById('emailError');
@@ -15,6 +34,7 @@ function validateEmailField() {
     } else {
         emailError.textContent = '';
     }
+    checkFullFill()
 }
 
 function validateAddress() {
@@ -27,6 +47,7 @@ function validateAddress() {
     } else {
         addressError.textContent = '';
     }
+    checkFullFill()
 }
 
 function validatePassword() {
@@ -39,6 +60,7 @@ function validatePassword() {
     } else {
         passwordError.textContent = '';
     }
+    checkFullFill()
 }
 
 function validateConfirmPassword() {
@@ -52,6 +74,7 @@ function validateConfirmPassword() {
     } else {
         confirmPasswordError.textContent = '';
     }
+    checkFullFill()
 }
 
 function validateFullName() {
@@ -64,9 +87,11 @@ function validateFullName() {
     } else {
         fullNameError.textContent = '';
     }
+    checkFullFill()
 }
 
 function validatePhoneNumber() {
+    console.log('test')
     const phoneNumber = document.getElementById('phone_number').value;
     const phoneNumberError = document.getElementById('phoneNumberError');
     if (!phoneNumber) {
@@ -76,6 +101,7 @@ function validatePhoneNumber() {
     } else {
         phoneNumberError.textContent = '';
     }
+    checkFullFill()
 }
 
 function validateForm() {

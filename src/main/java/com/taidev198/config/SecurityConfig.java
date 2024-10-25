@@ -35,10 +35,11 @@ public class SecurityConfig {
                 .securityMatcher(new AntPathRequestMatcher("/**"))
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationManager(authenticationManagerBean())//defines how spring security's filter perform authentication
+                .authenticationManager(
+                        authenticationManagerBean()) // defines how spring security's filter perform authentication(authorization)
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilterConfig, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(Customizer.withDefaults());//basic authentication
+                .httpBasic(Customizer.withDefaults()); // basic authentication
         return http.build();
     }
 

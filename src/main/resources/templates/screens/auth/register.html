@@ -28,7 +28,8 @@
                         <div class="form-group">
                             <label class="text-white" for="email">Email</label>
                             <input type="email" class="form-control border-0" id="email" th:field="*{email}" required>
-                            <span class="error-message" id="emailError" th:if="${#fields.hasErrors('email')}"
+                            <span class="error-message" id="emailError"></span>
+                            <span class="error-message" id="emailError1" th:if="${#fields.hasErrors('email')}"
                                   th:errors="*{email}"></span>
                         </div>
                     </div>
@@ -37,7 +38,8 @@
                             <label class="text-white" for="phone_number">Điện thoại</label>
                             <input type="tel" class="form-control border-0" id="phone_number" th:field="*{phoneNumber}"
                                    required>
-                            <span class="error-message" id="phoneNumberError"
+                            <span class="error-message" id="phoneNumberError"></span>
+                            <span class="error-message" id="phoneNumberError1"
                                   th:if="${#fields.hasErrors('phoneNumber')}"
                                   th:errors="*{phoneNumber}"></span>
                         </div>
@@ -47,7 +49,8 @@
                     <label class="text-white" for="full_name">Họ và tên</label>
                     <input type="text" class="form-control border-0" id="full_name" th:field="*{fullName}" required
                            minlength="8">
-                    <span class="error-message" id="fullNameError" th:if="${#fields.hasErrors('fullName')}"
+                    <span class="error-message" id="fullNameError"></span>
+                    <span class="error-message" id="fullNameError1" th:if="${#fields.hasErrors('fullName')}"
                           th:errors="*{fullName}"></span>
                 </div>
                 <div class="row">
@@ -56,7 +59,8 @@
                             <label class="text-white" for="password">Mật khẩu</label>
                             <input type="password" class="form-control border-0" id="password" th:field="*{password}"
                                    required minlength="8">
-                            <span class="error-message" id="passwordError" th:if="${#fields.hasErrors('password')}"
+                            <span class="error-message" id="passwordError"></span>
+                            <span class="error-message" id="passwordError1" th:if="${#fields.hasErrors('password')}"
                                   th:errors="*{password}"></span>
                         </div>
                     </div>
@@ -65,7 +69,8 @@
                             <label class="text-white" for="confirm_password">Nhập lại mật khẩu</label>
                             <input type="password" class="form-control border-0" id="confirm_password"
                                    th:field="*{confirmPassword}" required minlength="8">
-                            <span class="error-message" id="confirmPasswordError"
+                            <span class="error-message" id="confirmPasswordError"></span>
+                            <span class="error-message" id="confirmPasswordError1"
                                   th:if="${#fields.hasErrors('confirmPassword')}"
                                   th:errors="*{confirmPassword}"></span>
                         </div>
@@ -75,10 +80,11 @@
                     <label class="text-white" for="address">Địa chỉ</label>
                     <input type="text" class="form-control border-0" id="address" th:field="*{address}" required
                            minlength="10">
-                    <span class="error-message" id="addressError" th:if="${#fields.hasErrors('address')}"
+                    <span class="error-message" id="addressError"></span>
+                    <span class="error-message" id="addressError1" th:if="${#fields.hasErrors('address')}"
                           th:errors="*{address}"></span>
                 </div>
-                <button type="submit" class="btn btn-block text-uppercase p-3 mt-5">Đăng kí</button>
+                <button type="submit" class="btn btn-block text-uppercase p-3 mt-5" id="btn_register">Đăng kí</button>
                 <span class="d-flex align-items-center justify-content-center pt-3 text-gray-light">
                     Đã có tài khoản? &nbsp;
                     <a class="text-orange" href="/login">Đăng nhập</a>
