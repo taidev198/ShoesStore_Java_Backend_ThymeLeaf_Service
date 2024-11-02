@@ -2,17 +2,14 @@
 <html
     xmlns:th="http://www.thymeleaf.org"
     lang="en"
-    th:fragment="main-layout-fragment(title, otherStaticResources, header, mainContent)"
+    th:fragment="template-layout-fragment(title, otherStaticResources, header, mainContent)"
 >
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:replace="${title}">My Title</title>
 
-    <script src="/assets/js/bootstrap-loader.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-    <script src="/assets/js/header.js" defer></script>
+<!--    <script src="/assets/js/bootstrap-loader.js"></script>-->
     <link rel="stylesheet" href="/assets/css/button.css"/>
     <link rel="icon" href="/assets/images/logo.png"/>
 
@@ -20,7 +17,6 @@
     <link rel="stylesheet" href="/assets/css/footer.css">
     <link rel="stylesheet" href="/assets/css/header.css">
     <link rel="stylesheet" href="/assets/css/toast.css">
-    <link rel="stylesheet" href="/assets/css/chat/chat.css"/>
 
     <!-- Other javascript, css source files -->
     <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
@@ -35,15 +31,12 @@
     </script>
 </div>
 <!-- Header -->
-<div th:replace="${header} ? ${header} : ~{/components/header :: header}"></div>
+<div th:replace="${header} ? ${header} : ~{/header :: header}"></div>
 
 <!-- Main content  -->
 <div th:replace="${mainContent} ?: ~{}"></div>
-<div
-    th:replace="~{/components/fabchat :: fabchat}"
-></div>
 
 <!-- Footer  -->
-<div th:replace="~{/components/footer :: footer}"></div>
+<div th:replace="~{/footer :: footer}"></div>
 </body>
 </html>

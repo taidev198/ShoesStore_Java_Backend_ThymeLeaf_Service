@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Header</title>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+</head>
+<body>
+<div class="admin-header" th:fragment="admin-header">
+    <div class="admin-page-header-search-input-wrapper"></div>
+    <div class="admin-header-vr"></div>
+    <div class="admin-header-notifications">
+        <a title="bell icon" href="#"
+        ><img alt="bell icon" src="/assets/images/icons/notification.png" class="admin-header-icons"
+        /></a>
+        <a title="message icon" href="#"
+        ><img alt="chat icon" src="/assets/images/icons/chat.png" class="admin-header-icons"
+        /></a>
+    </div>
+    <div class="admin-header-vr"></div>
+    <div
+        class="admin-header-account-info-wrapper"
+        th:with="current_user = ${#ctx.session.current_user}"
+        th:unless="${#ctx.session.current_user == null}"
+        style="cursor:pointer;"
+    >
+        <button class="btn btn-secondary p-0 m-0 bg-transparent border-0" role="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img
+                th:src="${current_user.avatarUrl} ? ${current_user.avatarUrl} : '/assets/images/icons/no-avatar-user.png'"
+                alt="Avatar"
+                class="avatar"
+            />
+            <span class="text-dark" th:text="${current_user.fullName}"></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a th:unless="${current_user.role == 0}" style="font-size: 1rem"
+               class="dropdown-item text-dark py-2" href="/profiles">Thông
+                tin cá
+                nhân</a>
+            <div th:unless="${current_user.role == 0}" class="dropdown-divider"></div>
+            <a class="dropdown-item text-dark py-2" style="font-size: 1rem" href="/log-out">Đăng xuất</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
