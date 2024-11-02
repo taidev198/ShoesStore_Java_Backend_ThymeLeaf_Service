@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        null,
+        ~{::#main-content}
+    )}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="/assets/css/order.css">
+        <script src="/assets/js/order.js" defer></script>
+    </th:block>
+</head>
+<body id="main-content">
+<div class="container">
+    <div class="row justify-content-center align-items-start">
+        <div class="my-3 px-4 col-12 col-md-3">
+            <div class="list-group" id="list-tab">
+                <a class="list-group-item list-group-item-action border-1 rounded mb-3 text-center"
+                   href="/customer/orders?status=all">Tất cả</a>
+                <a class="list-group-item list-group-item-action border-1 rounded mb-3 text-center"
+                   href="/customer/orders?status=wait">Chờ xác nhận</a>
+                <a class="list-group-item list-group-item-action border-1 rounded mb-3 text-center"
+                   href="/customer/orders?status=confirm">Đang giao</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center mb-3"
+                   href="/customer/orders?status=reject">Bị từ chối</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center mb-3"
+                   href="/customer/orders?status=cancel">Đã hủy</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center mb-3"
+                   href="/customer/orders?status=received">Đã nhận</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center"
+                   href="/customer/orders?status=done">Đã hoàn thành</a>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(orderInfos)}" class="center col my-3 p-0 ml-3"
+             style="font-weight: bold; font-size: 1.5rem">
+            <p>Bạn chưa có đơn hàng nào. Hãy nhanh tay đặt hàng ngay!</p>
+        </div>
+
+        <div class="card-list d-flex flex-column my-3 p-0 col-12 col-md-9 p-0 m-0">
+            <div class="p-0 m-0" th:each="orderInfo,iter : ${orderInfos}">
+                <div class="container p-0">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img src="/assets/images/icons/header/ananas_logo.svg" alt="logo" width="85"
+                                         height="32">
+                                </div>
+                                <div th:with="isDisabled = ${orderInfo.isDisabled()}">
+                                    <span
+                                        th:if="${isDisabled}"
+                                        th:class="order-status-disabled"
+                                        th:text="${orderInfo.status}"></span>
+                                    <span
+                                        th:unless="${isDisabled}"
+                                        th:class="order-status-active"
+                                        th:text="${orderInfo.status}"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order details -->
+                        <div class="p-0 m-0 mw-100" th:each="orderDetail : ${orderInfo.getOrderDetailInfos()}">
+                            <div class="card-body pb-2">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img class="img-fluid rounded"
+                                             th:alt="${orderDetail.productDetailInfo.name}"
+                                             th:src="${orderDetail.productDetailInfo.images[0].url}">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h4 class="mb-3 text-capitalize mt-3 mt-md-0">
+                                            <span th:text="${orderDetail.productDetailInfo.name}"></span> -
+                                            <span th:text="${orderDetail.productDetailInfo.style}"></span> -
+                                            <span th:text="${orderDetail.productDetailInfo.material}"></span>
+                                        </h4>
+                                        <div
+                                            class="d-flex flex-row justify-content-between align-items-center text-orange">
+                                            <div>
+                                                <p class="mb-2 text-muted" th:text="'Size: ' + ${orderDetail.size}"></p>
+                                                <p class="mb-2 text-muted"
+                                                   th:text="'Số lượng: ' + ${orderDetail.quantity}"></p>
+                                            </div>
+                                            <div class="d-flex">
+                                                <p class="text-black-50" style="text-decoration: line-through"
+                                                   th:if="${orderDetail.productDetailInfo.discount}!=0"
+                                                   th:text="${orderDetail.productDetailInfo.price}"></p>
+                                                <p class="ml-2" th:text="${orderDetail.price}"></p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account information -->
+                        <hr class="p-0 mt-2 m-0"/>
+                        <div class="card-footer border-0 py-2 my-0">
+                            <div class="accordion p-0 m-0" id="accountInfoAccordion">
+                                <div class="p-0 m-0" th:id="'heading' + ${iter.index}">
+                                    <button
+                                        class="d-flex align-items-center justify-content-start mb-2 account-info btn p-0 m-0 bg-transparent"
+                                        type="button" data-toggle="collapse"
+                                        th:data-target="'#collapse' + ${iter.index}"
+                                        aria-expanded="true" th:aria-controls="'collapse' + ${iter.index}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                             fill="currentColor"
+                                             class="bi bi-person-vcard-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm9 1.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5M9 8a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4A.5.5 0 0 0 9 8m1 2.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5m-1 2C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 0 2 13h6.96q.04-.245.04-.5M7 6a2 2 0 1 0-4 0 2 2 0 0 0 4 0"/>
+                                        </svg>
+                                        <span class="text-uppercase ml-3 font-weight-bold">Thông tin người nhận</span>
+                                    </button>
+                                </div>
+                                <div class="collapse" th:id="'collapse' + ${iter.index}"
+                                     th:aria-labelledby="'heading' + ${iter.index}" data-parent="#accountInfoAccordion">
+                                    <div class="d-flex flex-column" style="gap: 8px">
+                                        <div class="d-flex align-items-center">
+                                            <span class="col-md-2 p-0">Tên người nhận:</span>
+                                            <span class="col-md-10 p-0 text-right"
+                                                  th:text="${orderInfo.account.fullName}"></span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="col-md-2 p-0">Số điện thoại:</span>
+                                            <span class="col-md-10 p-0 text-right"
+                                                  th:text="${orderInfo.phoneNumber}"></span>
+                                        </div>
+                                        <div class="d-flex align-items-start">
+                                            <span class="col-md-2 p-0">Địa chỉ:</span>
+                                            <span class="col-md-10 p-0 text-right"
+                                                  th:text="${orderInfo.address}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order summary and action buttons -->
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex flex-wrap mr-2" style="gap: 5px">
+                                    <button class="btn btn-danger rounded btn-sm"
+                                            data-toggle="modal" data-target="#cancelConfirmModal"
+                                            th:onclick="'setData(' + ${orderInfo.id} + ',' + '\'cancel\'' + ')'"
+                                            th:if="${orderInfo.status} == 'Chờ xác nhận'">Hủy đơn hàng
+                                    </button>
+                                    <button class="btn btn-success rounded btn-sm"
+                                            data-toggle="modal" data-target="#receivedConfirmModal"
+                                            th:onclick="'setData(' + ${orderInfo.id} + ',' + '\'received\'' + ')'"
+                                            th:if="${orderInfo.status} == 'Đang giao hàng'">Đã nhận hàng
+                                    </button>
+                                </div>
+                                <h5>Thành tiền: <span class="text-orange font-weight-bold"
+                                                      th:text="${orderInfo.totalPrice}"></span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row center">
+        <nav aria-label="Page navigation" class="pagination-bottom">
+            <ul>
+                <li th:if="${paginationHelper.prevPageUrl}">
+                    <a th:href="@{${paginationHelper.prevPageUrl}}">&lt;</a>
+                </li>
+                <li th:each="pageNumber : ${paginationHelper.pageNumbers}"
+                    th:classappend="${pageNumber == page} ? 'active' : ''">
+                    <a th:href="@{${paginationHelper.getPageUrl(pageNumber)}}"
+                       th:text="${pageNumber}">1</a>
+                </li>
+                <li th:if="${paginationHelper.nextPageUrl}">
+                    <a th:href="@{${paginationHelper.nextPageUrl}}">&gt;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- reject confirm modal -->
+    <div class="modal fade" id="cancelConfirmModal" tabindex="-1" role="dialog"
+         aria-labelledby="cancelConfirmModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75" width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange" id="cancelConfirmModalContent">Xác nhận
+                        hủy đơn
+                        hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có chắc chắn muốn hủy đơn hàng này không? Đơn hàng đã hủy không thể
+                        khôi phục lại.</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       th:onclick="'sendChangeStatusRequest(' + '\'/customer/orders\'' + ')'">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- received confirm modal -->
+    <div class="modal fade" id="receivedConfirmModal" tabindex="-1" role="dialog"
+         aria-labelledby="receivedConfirmModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75" width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange" id="receivedConfirmModalContent">Xác nhận
+                        đã nhận đơn
+                        hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Nếu bạn đã nhận được đơn hàng, hãy xác nhận ngay với cửa hàng!</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       th:onclick="'sendChangeStatusRequest(' + '\'/customer/orders\'' + ')'">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

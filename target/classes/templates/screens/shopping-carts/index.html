@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{/layouts/main-layout :: main-layout-fragment(
+    ~{::title},
+    ~{::#static-resources},
+    null,
+    ~{::#main-content}
+)}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Giỏ Hàng - Ananas</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="/assets/css/cart/cart.css"/>
+        <script src="/assets/js/shopping-cart-script.js"></script>
+    </th:block>
+</head>
+
+<body>
+<div id="main-content" class="main-cart container-fluid">
+    <div class="row">
+        <div th:if="${#lists.isEmpty(shoppingCarts)}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 prd-search">
+            <div class="row center search-string">
+                <h1>GIỎ HÀNG CỦA BẠN</h1>
+            </div>
+            <div class="row divider-2"></div>
+            <div class="row prd1-right-items">
+                <div class="center no-product">
+                    <p>Bạn đang không có sản phẩm nào trong giỏ hàng!</p>
+                </div>
+                <div class="no-product-btn center">
+                    <button onclick="location.pathname='/products'"
+                            class="btn btn-lg back-to-product-list orange-button text-uppercase">
+                        Quay lại mua hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div th:if="${not #lists.isEmpty(shoppingCarts)}" class="col-xs-12 col-sm-12 col-md-12 col-lg-8 main-cart-left">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 title-1">GIỎ HÀNG</div>
+                <div th:each="cartProduct, index :${shoppingCarts}"
+                     class="row w-full">
+                    <div class="col-12 col-sm-12 col-md-8 col-lg-9 item-2">
+                        <div class="media">
+                            <div class="media-left">
+                                <a th:href="${cartProduct.getProductURL()}">
+                                    <img class="media-object"
+                                         th:src="${cartProduct.getImages().get(0).getUrl()}"
+                                         height="283" width="283" data-holder-rendered="true">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <div>
+                                    <a th:href="${cartProduct.getProductURL()}">
+                                        <h4 th:text="${cartProduct.getName() + ' - ' + cartProduct.getStyle() }"
+                                            class="media-heading"></h4>
+                                    </a>
+                                    <h5 class="price">
+                                        <span class="saleoff"><strong
+                                            th:text="${'Giá: ' + cartProduct.getDiscountPriceFormated()}"></strong></span>
+                                        <span th:if="${cartProduct.discount != null and cartProduct.discount > 0}"
+                                              class="normal" th:text="${cartProduct.getOriginPriceFormated()}"></span>
+                                    </h5>
+                                </div>
+                                <div class="row bottom">
+                                    <div class="form-group">
+                                        <label>Size</label>
+                                        <select
+                                            class="form-control select-form"
+                                            th:id="'select-size-' + ${index.count}"
+                                            th:data-account-id="${cartProduct.customerId}"
+                                            th:value="${cartProduct.size}"
+                                            th:data-cart-id="${cartProduct.id}">
+                                            <option th:each="quantity : ${cartProduct.quantities}"
+                                                    th:value="${quantity.getSize().getValue()}"
+                                                    th:data-quantity="${quantity.getQuantity()}"
+                                                    th:data-quantity-id="${quantity.getId()}"
+                                                    th:text="${quantity.getSize().getValue()}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Số lượng</label>
+                                        <input type="number"
+                                               class="form-control select-form"
+                                               th:id="'select-quantity-' + ${index.count}"
+                                               min="1"
+                                               max="1"
+                                               th:value="${cartProduct.quantity}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-3 item-2-1">
+                        <div
+                            th:id="'total-price-' + ${cartProduct.id}"
+                            th:data-price="${cartProduct.getDiscountPrice()}"
+                            th:text="${cartProduct.getTotalDiscountPriceFormated()}" class="price"></div>
+                        <div class="status">Còn hàng</div>
+                        <div class="button">
+                            <button class="btn btn-light addToWishList">
+                                <img src="/assets/images/icons/cart/Heart.svg">
+                            </button>
+                            <button
+                                th:onclick="'setCartID(' + ${cartProduct.id} + ')'"
+
+                                data-toggle="modal" data-target="#confirmDeleteModal"
+                                class="btn btn-dark remove-product-in-cart">
+                                <img src="/assets/images/icons/cart/Trash_bin.svg">
+                            </button>
+                        </div>
+                    </div>
+                    <div th:if="${!index.last}" class="col-12 col-sm-12 col-md-12 col-lg-12 item-divider ">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 item-divider-1 "></div>
+
+            <div class="row">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6 title-3">
+                    <button
+                        data-toggle="modal" data-target="#confirmDeleteAllModal"
+                        class="btn btn-delall btn-clearAll">XÓA HẾT</button>
+                </div>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6 title-3">
+                    <button onclick="location.pathname='/products'" class="btn btn-cont">QUAY LẠI
+                        MUA HÀNG
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div th:if="${not #lists.isEmpty(shoppingCarts)}" class="col-12 col-sm-12 col-md-12 col-lg-4 main-cart-right">
+            <ul class="list-group">
+                <li class="list-group-item title">ĐƠN HÀNG</li>
+                <li class="list-group-item divider"></li>
+                <li class="list-group-item title-1">NHẬP MÃ KHUYẾN MÃI</li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <input type="text" class="form-control" aria-label="Recipient's username"
+                               aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn orange-button btn-apply" type="button">ÁP DỤNG</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item divider-1"></li>
+                <li class="list-group-item text-1">
+                    <span class="title-3">Đơn hàng</span>
+                    <span th:text="${totalOriginPrice}" id="cart-total" class="title-3-1 totalPriceOfCart"></span>
+                </li>
+                <li class="list-group-item text-2">
+                    <span class="title-3">Giảm</span>
+                    <span th:text="${totalDiscountPrice}" id="cart-total-discount"
+                          class="title-4-1 totalDiscountOfCart"></span>
+                </li>
+                <li class="list-group-item divider-1"></li>
+                <li class="list-group-item">
+                    <span class="title-5">TẠM TÍNH</span>
+                    <span th:text="${finalPrice}" id="cart-final-price" class="title-5-1 tempPrice"></span>
+                </li>
+                <li class="list-group-item">
+                    <a data-href="shipping-infomation/" class="btn btn-cart to-checkout center" href="/carts?pay=true">
+                        TIẾP TỤC THANH TOÁN
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="loading-filter" class="loading-filter">
+        <div class="loading-filter-inner">
+            <div class="loading">
+                <svg version="1.1" id="loader-1" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40"
+                     enable-background="new 0 0 40 40" xml:space="preserve">
+           <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path>
+                    <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20"
+                                      to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform>
+                </path>
+           </svg>
+            </div>
+        </div>
+    </div>
+
+    <!--  Confirm delete model  -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmDeleteModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="confirmDeleteModalContent">Xóa sản phẩm khỏi giỏ hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không ?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       onclick="deleteCartItemByID()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Confirm delete all model  -->
+    <div class="modal fade" id="confirmDeleteAllModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmDeleteModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="confirmDeleteModalAllContent">Xóa hết giỏ hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có muốn xóa hết sản phẩm trong giỏ hàng không ?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       onclick="deleteAllCart()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
