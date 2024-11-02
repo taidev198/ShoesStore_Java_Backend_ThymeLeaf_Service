@@ -3,6 +3,9 @@ package com.taidev198.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import com.taidev198.model.Notification;
+import com.taidev198.model.NotificationStatus;
+import com.taidev198.service.*;
 import jakarta.mail.MessagingException;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +22,6 @@ import com.taidev198.model.Enum.AccountRole;
 import com.taidev198.model.RefreshToken;
 import com.taidev198.repository.AccountRepository;
 import com.taidev198.repository.RefreshTokenRepository;
-import com.taidev198.service.AuthService;
-import com.taidev198.service.CloudinaryService;
-import com.taidev198.service.JwtService;
-import com.taidev198.service.MailService;
 import com.taidev198.util.exception.BadRequestException;
 import com.taidev198.util.exception.DuplicateEmailException;
 import com.taidev198.util.exception.ForbiddenException;
@@ -39,10 +38,19 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
     private final MailService mailService;
+    private final NotificationService notificationService;
 
     // Authenticating user and generating new token for one
     @Override
     public Credential login(LoginRequest loginRequest) {
+        notificationService.sendNotify(
+            4,
+            Notification.builder()
+                .status(NotificationStatus.RETURN)
+                .message("test")
+                .title("test")
+                .build()
+        );
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/carts")
 @RequiredArgsConstructor
-@PreAuthorizeCustomer
 public class ShoppingCartsController {
     private final ShoppingCartsService shoppingCartsService;
 

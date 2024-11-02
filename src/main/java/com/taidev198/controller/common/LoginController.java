@@ -1,5 +1,8 @@
 package com.taidev198.controller.common;
 
+import com.taidev198.model.Notification;
+import com.taidev198.model.NotificationStatus;
+import com.taidev198.service.NotificationService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -32,6 +35,7 @@ public class LoginController {
 
     private final AuthService authService;
     private final AccountsServiceImpl accountsService;
+    private final NotificationService notificationService;
     private int attempt = 0;
 
     @WithRateLimitProtection
@@ -51,6 +55,14 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@ModelAttribute("loginRequest") LoginRequest loginRequest, Model model) {
         try {
+            notificationService.sendNotify(
+                4,
+                Notification.builder()
+                    .title("test")
+                    .message("test")
+                    .status(NotificationStatus.RETURN)
+                    .build()
+            );
             attempt++;
             var credential = authService.login(loginRequest);
             // Save token to cookie
