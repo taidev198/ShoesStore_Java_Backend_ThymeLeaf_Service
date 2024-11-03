@@ -86,22 +86,22 @@ function showToast(type, message) {
         }, 300);
     }, duration);
 }
-const socket = new SockJS('/ws');
-stompClient = Stomp.over(socket);
-stompClient.connect({}, onConnected, onError);
-function onConnected() {
-    // stompClient.subscribe(`/user/1/queue/messages`, onMessageReceived);
-    // stompClient.subscribe(`/user/public`, onMessageReceived);
-    //
-    // // register the connected user
-    // stompClient.send("/app/user.addUser",
-    //     {},
-    //     JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
-    // );
-    // document.querySelector('#connected-user-fullname').textContent = fullname;
-    // findAndDisplayConnectedUsers().then();
-    console.log('connect')
-}
-function onError() {
-    console.log('error')
-}
+// const socket = new SockJS('/ws');
+// stompClient = Stomp.over(socket);
+// stompClient.connect({}, onConnected, onError);
+// function onConnected() {
+//     // stompClient.subscribe(`/user/1/queue/messages`, onMessageReceived);
+//     // stompClient.subscribe(`/user/public`, onMessageReceived);
+//     //
+//     // // register the connected user
+//     // stompClient.send("/app/user.addUser",
+//     //     {},
+//     //     JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
+//     // );
+//     // document.querySelector('#connected-user-fullname').textContent = fullname;
+//     // findAndDisplayConnectedUsers().then();
+//     console.log('connect')
+// }
+// function onError() {
+//     console.log('error')
+// }

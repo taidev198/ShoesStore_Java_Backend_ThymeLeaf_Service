@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="/assets/css/admin-layout.css" />
         <link rel="icon" href="/assets/images/logo.png" />
         <link rel="stylesheet" href="/assets/css/toast.css" />
-
+        <link rel="stylesheet" href="/assets/css/chat/fchat.css">
         <!-- Other javascript, css source files -->
         <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
         <script src="/assets/js/toast.js"></script>
@@ -36,7 +36,11 @@
                 <div th:replace="~{/components/admin-sidebar :: admin-sidebar}"></div>
                 <div id="admin-layout-main-content">
                     <div th:replace="~{/components/admin-header :: admin-header}"></div>
+
                     <div th:replace="${mainContent} ?: ~{}"></div>
+                    <div
+                        th:replace="~{/components/fabchat-ex :: fabchat-admin}"
+                    ></div>
                 </div>
             </div>
             <script src="/assets/js/admin-layout.js"></script>

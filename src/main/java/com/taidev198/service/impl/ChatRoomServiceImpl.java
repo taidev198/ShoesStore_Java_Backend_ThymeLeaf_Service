@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ChatRoomServiceImpl implements ChatRomService {
+public class ChatRoomServiceImpl  {
 
-    private final ChatRoomRepository chatRoomRepository;
-
-
-    @Override
-    public Optional<String> getChatRoomId(Integer senderId, Integer receiverId, boolean createNewIfNotExisted) {
+//    private final ChatRoomRepository chatRoomRepository;
+//
+//
+//    @Override
+//    public Optional<String> getChatRoomId(Integer senderId, Integer receiverId, boolean createNewIfNotExisted) {
 //        return chatRoomRepository.findBySenderIdAndReceiverId()
 //            .map(ChatRoom::getChatId)
 //            .or(() ->{
@@ -25,26 +25,25 @@ public class ChatRoomServiceImpl implements ChatRomService {
 //                }
 //                return Optional.empty();
 //            });
-        return null;
-    }
-
-    private String createChatRoom(Integer senderId, Integer receiverId) {
-        var chatId = String.format("%s%s", senderId, receiverId);
-
-        ChatRoom senderAndReceiver =
-            ChatRoom.builder()
-                .chatId(chatId)
-                .senderId(senderId)
-                .receiverId(receiverId)
-                .build();
-        ChatRoom receiverAndSender =
-            ChatRoom.builder()
-                .chatId(chatId)
-                .senderId(receiverId)
-                .receiverId(senderId)
-                .build();
-        chatRoomRepository.save(senderAndReceiver);
-        chatRoomRepository.save(receiverAndSender);
-        return chatId;
-    }
+//    }
+//
+//    private String createChatRoom(Integer senderId, Integer receiverId) {
+//        var chatId = String.format("%s%s", senderId, receiverId);
+//
+//        ChatRoom senderAndReceiver =
+//            ChatRoom.builder()
+//                .chatId(chatId)
+//                .senderId(senderId)
+//                .receiverId(receiverId)
+//                .build();
+//        ChatRoom receiverAndSender =
+//            ChatRoom.builder()
+//                .chatId(chatId)
+//                .senderId(receiverId)
+//                .receiverId(senderId)
+//                .build();
+//        chatRoomRepository.save(senderAndReceiver);
+//        chatRoomRepository.save(receiverAndSender);
+//        return chatId;
+//    }
 }

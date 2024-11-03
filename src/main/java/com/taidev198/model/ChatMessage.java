@@ -1,23 +1,27 @@
 package com.taidev198.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@Entity
-@Builder
-@RequiredArgsConstructor
-@Table(name = "chat_message")
+import java.util.Date;
+
+@Data
 @AllArgsConstructor
-public class ChatMessage extends EntityBase {
-
+@NoArgsConstructor
+@Builder
+@Table(name = "chat_message")
+@Entity
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-    private String message;
     private String chatId;
-    private Integer senderId;
-    private Integer receiverId;
+    private String senderId;
+    private String recipientId;
+    private String content;
+    private int messageStatus;
+    private Date timestamp;
 }

@@ -11,27 +11,27 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ChatMessageServiceImpl implements ChatMessageService {
+public class ChatMessageServiceImpl   {
 
-    private final ChatMessageRepository chatMessageRepository;
-    private final ChatRoomServiceImpl chatRoomService;
-
-    public ChatMessage save(ChatMessage chatMessage) {
-        var chatId =
-            chatRoomService.getChatRoomId(
-                chatMessage.getSenderId(),
-                chatMessage.getReceiverId(),
-                true
-            ).orElseThrow();
-        chatMessage.setChatId(chatId);
-        chatMessageRepository.save(chatMessage);
-        return chatMessage;
-    }
-
-    public List<ChatMessage> findAllChatMessages(Integer senderId, Integer receiverId) {
-        var chatId =
-            chatRoomService.getChatRoomId(senderId, receiverId, false);
-        return chatId.map(chatMessageRepository::findByChatId).orElse(new ArrayList<>());
-    }
+//    private final ChatMessageRepository chatMessageRepository;
+//    private final ChatRoomServiceImpl chatRoomService;
+//
+//    public ChatMessage save(ChatMessage chatMessage) {
+//        var chatId =
+//            chatRoomService.getChatRoomId(
+//                chatMessage.getSenderId(),
+//                chatMessage.getReceiverId(),
+//                true
+//            ).orElseThrow();
+//        chatMessage.setChatId(chatId);
+//        chatMessageRepository.save(chatMessage);
+//        return chatMessage;
+//    }
+//
+//    public List<ChatMessage> findAllChatMessages(Integer senderId, Integer receiverId) {
+//        var chatId =
+//            chatRoomService.getChatRoomId(senderId, receiverId, false);
+//        return chatId.map(chatMessageRepository::findByChatId).orElse(new ArrayList<>());
+//    }
 
 }
