@@ -1,5 +1,6 @@
 package com.taidev198.controller.chat;
 
+import com.taidev198.model.Account;
 import com.taidev198.model.ChatMessage;
 import com.taidev198.model.ChatNotification;
 import com.taidev198.service.AccountsService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,9 +52,9 @@ public class ChatController {
                 .ok(chatMessageService.findChatMessages(senderId, recipientId));
     }
 
-//    @GetMapping("/conversions/{username}")
-//    public ResponseEntity<List<Optional<User>>> findConversations(@PathVariable String username) {
-//        return ResponseEntity
-//                .ok(userService.findAllByUsername(username));
-//    }
+    @GetMapping("/conversions/{id}")
+    public ResponseEntity<List<Optional<Account>>> findConversations(@PathVariable String id) {
+        return ResponseEntity
+                .ok(userService.findAllById(Integer.valueOf(id)));
+    }
 }

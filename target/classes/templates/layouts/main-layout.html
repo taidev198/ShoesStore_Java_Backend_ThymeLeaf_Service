@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/assets/css/footer.css">
     <link rel="stylesheet" href="/assets/css/header.css">
     <link rel="stylesheet" href="/assets/css/toast.css">
-    <link rel="stylesheet" href="/assets/css/chat/chat.css"/>
+    <link rel="stylesheet" href="/assets/css/chat/fchat.css">
 
     <!-- Other javascript, css source files -->
     <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
@@ -40,7 +40,7 @@
 <!-- Main content  -->
 <div th:replace="${mainContent} ?: ~{}"></div>
 <div
-    th:replace="~{/components/fabchat :: fabchat}"
+    th:replace="~{/components/fabchat-ex :: fabchat-admin}"
 ></div>
 
 <!-- Footer  -->

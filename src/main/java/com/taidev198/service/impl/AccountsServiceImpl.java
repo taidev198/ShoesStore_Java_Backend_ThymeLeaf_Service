@@ -1,9 +1,9 @@
 package com.taidev198.service.impl;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import com.taidev198.service.ChatMessageService;
+import com.taidev198.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +24,10 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Autowired
     private final AccountRepository accountRepository;
+    @Autowired
+    private ChatRoomService chatRoomService;
+    @Autowired
+    private ChatMessageService chatMessageService;
 
     public Page<Account> findAccountsByFilter(
             int page, int size, String order, String role, String sortBy, String query) {
@@ -54,5 +58,18 @@ public class AccountsServiceImpl implements AccountsService {
     @Override
     public Account findAccountByEmail(String email) {
         return accountRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public List<Optional<Account>> findAllById(Integer senderId) {
+        List<String> receiverId = chatRoomService.findReceiverId(String.valueOf(senderId));
+        var list = new ArrayList<>(receiverId.
+            stream().map(r -> accountRepository.findAccountById(Integer.valueOf(r))).toList());
+        return list.stream().sorted(
+            ((o1, o2) -> {
+                var chatMessage = chatMessageService.findChatMessages(String.valueOf(senderId), o1.get().getUsername());
+                var chatMessage1 = chatMessageService.findChatMessages(String.valueOf(senderId), o2.get().getUsername());
+                return chatMessage1.get(chatMessage1.size() -1).getTimestamp().after(chatMessage.get(chatMessage.size() -1).getTimestamp()) ? 1 : -1;
+            })).toList();
     }
 }

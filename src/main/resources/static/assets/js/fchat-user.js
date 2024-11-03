@@ -1,18 +1,21 @@
 'use strict';
 const chatArea = document.querySelector('#chatArea');
 const btnSendMessage = document.querySelector('#btnSendMessage');
+const messageInput = document.querySelector('#message-input');
+const contactBar = document.querySelector('#contactsSidebar');
 const userId = document.querySelector('#userid');
 let selectedUserId =null
 let subscription = null;
 let subscriptionMess = null;
 let stompClient = null;
+const socket = new SockJS('/ws');
+stompClient = Stomp.over(socket);
+stompClient.connect({}, onConnected, onError);
 let clientId = localStorage.getItem('username') || uuidv4();
 localStorage.setItem('username', clientId);
 // event.preventDefault();
 const uID = userId == null ? clientId : userId.textContent;
-const socket = new SockJS('/ws');
-stompClient = Stomp.over(socket);
-stompClient.connect({}, onConnected, onError);
+contactBar.classList.add('hidden');
 console.log(userId)
 console.log(uID)
 //click to conversion
@@ -44,12 +47,13 @@ function onConnected() {
     subscription = stompClient.subscribe(`/user/${uID}/queue/messages`, onMessageReceived);
     subscriptionMess = stompClient.subscribe(`/user/public`, onMessageReceived);
     findAndDisplayConversions().then();
+    fetchAndDisplayUserChat().then();
 }
 
 async function findAndDisplayConversions() {
-    console.log(uID)
     const conversionsResponse = await fetch(`/conversions/${uID}`);
     let listUser = await conversionsResponse.json();
+    console.log(uID)
     console.log(listUser);
     // const conversionsList = document.getElementById('conversions');
     // conversionsList.innerHTML = '';
@@ -63,6 +67,7 @@ async function findAndDisplayConversions() {
         // }
     });
 }
+
 
 function displayMessage(senderId, content, timesend) {
     const messageContainer = document.createElement('div');
@@ -86,8 +91,9 @@ function displayMessage(senderId, content, timesend) {
 }
 
 async function fetchAndDisplayUserChat() {
-    const userChatResponse = await fetch(`/messages/${uID}/${selectedUserId}`);
+    const userChatResponse = await fetch(`/messages/${uID}/4`);
     const userChat = await userChatResponse.json();
+    console.log(userChat +'user chat')
     chatArea.innerHTML = '';
     userChat.forEach(chat => {
         displayMessage(chat.senderId, chat.content, chat.timestamp);
@@ -101,12 +107,12 @@ function sendMessage(event) {
     if (messageContent && stompClient) {
         const chatMessage = {
             senderId: uID,
-            recipientId: selectedUserId,
+            recipientId: 4,
             content: messageInput.value.trim(),
             timestamp: new Date()
         };
         stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
-        displayMessage(username, messageInput.value.trim(), timestamp);
+        displayMessage(uID, messageInput.value.trim(), timestamp);
         messageInput.value = '';
     }
     chatArea.scrollTop = chatArea.scrollHeight;
@@ -179,7 +185,7 @@ function addContact(id, name, lastMessage, avatarUrl, timestamp) {
     contactItem.appendChild(contactInfo);
     contactItem.appendChild(contactTime);
 
-    contactItem.addEventListener('click', userItemClick);
+    // contactItem.addEventListener('click', userItemClick);
 
     // Add the complete contact item to the contacts list
     contactsList.appendChild(contactItem);
@@ -198,12 +204,6 @@ function toggleChatWindow() {
 
 function onError() {
 
-}
-
-function uuidv4() {
-    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-        (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-    );
 }
 
 btnSendMessage.addEventListener('click', sendMessage);
