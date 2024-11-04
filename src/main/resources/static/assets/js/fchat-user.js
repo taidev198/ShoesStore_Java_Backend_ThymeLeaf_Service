@@ -59,7 +59,7 @@ async function findAndDisplayConversions() {
     // conversionsList.innerHTML = '';
 
     listUser.forEach(user => {
-        addContact(user.id, user.fullName,'','', new Date());
+        addContact(user, '','','', new Date());
         // if (conversions.indexOf(user) < conversions.length - 1) {
         //     const separator = document.createElement('li');
         //     separator.classList.add('separator');
@@ -145,12 +145,11 @@ async function onMessageReceived(payload) {
 function addContact(id, name, lastMessage, avatarUrl, timestamp) {
     // Get the container where contacts are listed
     const contactsList = document.getElementById("contactsList");
-    contactsList.id = id;
 
     // Create the main list-group item div
     const contactItem = document.createElement("div");
     contactItem.classList.add("list-group-item", "d-flex", "align-items-center");
-
+    contactItem.id = id
     // Create avatar image
     const avatar = document.createElement("img");
     avatar.src = avatarUrl;
@@ -185,7 +184,7 @@ function addContact(id, name, lastMessage, avatarUrl, timestamp) {
     contactItem.appendChild(contactInfo);
     contactItem.appendChild(contactTime);
 
-    // contactItem.addEventListener('click', userItemClick);
+     contactItem.addEventListener('click', userItemClick);
 
     // Add the complete contact item to the contacts list
     contactsList.appendChild(contactItem);

@@ -31,6 +31,7 @@ public class WebUtils {
         public static void setAttribute(String name, Object value) {
             var session = getSession();
             session.setAttribute(name, value);
+            System.out.println("set: " + name);
         }
 
         public static void setAttribute(Map<String, ?> data) {
@@ -51,6 +52,7 @@ public class WebUtils {
         public static void removeAttribute(String name) {
             var session = getSession();
             session.removeAttribute(name);
+            System.out.println("remove: " + name);
         }
 
         public static void removeAllData() {

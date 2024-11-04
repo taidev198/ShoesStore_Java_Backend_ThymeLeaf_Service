@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import com.taidev198.bean.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.taidev198.annotation.CurrentAccount;
 import com.taidev198.annotation.PreAuthorizeCustomer;
-import com.taidev198.bean.CartForm;
-import com.taidev198.bean.ShoppingCartInfo;
-import com.taidev198.bean.ShoppingCartWrapper;
-import com.taidev198.bean.ToastMessage;
 import com.taidev198.model.Account;
 import com.taidev198.service.ShoppingCartsService;
 import com.taidev198.util.WebUtils;
