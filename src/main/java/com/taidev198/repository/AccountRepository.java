@@ -21,4 +21,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
             + "LOWER(a.email) LIKE LOWER(CONCAT('%', :query, '%'))) "
             + "AND (:role IS NULL OR a.role IN :role)")
     Page<Account> findByFilter(String query, List<AccountRole> role, Pageable pageable);
+
+    @Query("select a.id from Account a where a.id = :senderId")
+    Optional<Account> findAccountById(Integer senderId);
 }

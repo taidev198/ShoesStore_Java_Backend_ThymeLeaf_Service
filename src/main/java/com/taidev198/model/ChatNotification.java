@@ -1,17 +1,18 @@
 package com.taidev198.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import lombok.*;
-
-@Getter
-@Setter
-@Builder
-@RequiredArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ChatNotification {
-
     private Long id;
-    private String message;
-    private Integer senderId;
-    private Integer receiverId;
+    private String chatId;
+    private String senderId;
+    private String recipientId;
+    private String content;
 }

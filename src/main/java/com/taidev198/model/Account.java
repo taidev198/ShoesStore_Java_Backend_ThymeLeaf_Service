@@ -50,7 +50,7 @@ public class Account extends EntityBase implements UserDetails {
     private Boolean isActivated = true;
     private int isVerified = 0;
     // One-to-Many relationship with RefreshToken
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<RefreshToken> refreshTokens;
     // One-to-Many relationship with ShoppingCart
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)

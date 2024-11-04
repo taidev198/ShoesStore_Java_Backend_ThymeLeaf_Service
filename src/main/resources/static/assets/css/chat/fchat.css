@@ -1,0 +1,138 @@
+/* Floating Action Button (FAB) */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Chat window styling */
+.chat-window {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 90%;
+    max-width: 700px;
+    height: 500px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Slide-up animation */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Show chat window */
+.chat-window.show {
+    display: flex !important;
+}
+
+/* Conversation list */
+.conversation-list {
+    background-color: #f8f9fa;
+    overflow-y: auto;
+}
+
+/* Chat area styling */
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Chat bubbles */
+.chat-bubble-left, .chat-bubble-right {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+}
+
+.chat-bubble-left {
+    background-color: #f1f1f1;
+    color: #333;
+    border-top-left-radius: 0;
+}
+
+.chat-bubble-right {
+    background-color: #007bff;
+    color: #fff;
+    border-top-right-radius: 0;
+}
+.friend-drawer {
+    padding: 10px 15px;
+    display: flex;
+    vertical-align: baseline;
+    background: #fff;
+    transition: .3s ease;
+
+    &--grey {
+        background: #eee;
+    }
+
+    .text {
+        margin-left: 12px;
+        width: 70%;
+
+        h6 {
+            margin-top: 6px;
+            margin-bottom: 0;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .time {
+        color: grey;
+    }
+
+    &--onhover:hover {
+        background: blue;
+        cursor: pointer;
+
+        p,
+        h6,
+        .time {
+            color: #fff !important;
+        }
+    }
+}
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+}
+.scoll {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#contactsList .list-group-item:hover {
+    background-color: #e9ecef;
+}

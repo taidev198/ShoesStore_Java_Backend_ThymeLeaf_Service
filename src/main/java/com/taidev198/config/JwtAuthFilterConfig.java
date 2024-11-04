@@ -82,6 +82,8 @@ public class JwtAuthFilterConfig extends OncePerRequestFilter {
 
     private void setAuthentication(String accessToken, HttpServletRequest req) {
         Account userDetails = jwtService.getAccountFromToken(accessToken); // get account from token
+        System.out.println("token:" + accessToken);
+        System.out.println(userDetails.toString() + "hahaha");
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, accessToken, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
