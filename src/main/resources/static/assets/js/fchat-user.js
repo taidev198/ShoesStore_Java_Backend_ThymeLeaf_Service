@@ -71,18 +71,18 @@ async function findAndDisplayConversions() {
 function displayMessage(senderId, content, timesend) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('mb-2');
-    const message = document.createElement('span');
-    const time = document.createElement('span');
+    const message = document.createElement('p');
+    const time = document.createElement('p');
     time.textContent = new Date(timesend).toISOString().replace("T"," ").substring(0, 19);
     message.textContent = content;
     if (senderId === uID) {
         messageContainer.classList.add('text-right');
         message.classList.add('chat-bubble-right');
-        time.classList.add('chat-bubble-right');
+        //time.classList.add('chat-bubble-right');
     } else {
         messageContainer.classList.add('text-left');
         message.classList.add('chat-bubble-left');
-        time.classList.add('chat-bubble-left');
+        //time.classList.add('chat-bubble-left');
     }
     messageContainer.appendChild(message);
     messageContainer.appendChild(time);
