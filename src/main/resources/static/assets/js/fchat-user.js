@@ -47,7 +47,6 @@ function onConnected() {
     subscription = stompClient.subscribe(`/user/${uID}/queue/messages`, onMessageReceived);
     subscriptionMess = stompClient.subscribe(`/user/public`, onMessageReceived);
     findAndDisplayConversions().then();
-    fetchAndDisplayUserChat().then();
 }
 
 async function findAndDisplayConversions() {
@@ -120,18 +119,18 @@ function sendMessage(event) {
 }
 
 async function onMessageReceived(payload) {
-    await findAndDisplayConnectedUsers();
     console.log('Message received', payload);
     const message = JSON.parse(payload.body);
     if (selectedUserId && selectedUserId === message.senderId) {
-        displayMessage(message.senderId, message.content, message.timestamp);
+        console.log('display message', message.date);
+        displayMessage(message.senderId, message.content, message.date);
         chatArea.scrollTop = chatArea.scrollHeight;
     }
-    if (selectedUserId) {
-        document.querySelector(`#${selectedUserId}`).classList.add('active');
-    } else {
-        messageForm.classList.add('hidden');
-    }
+    // if (selectedUserId) {
+    //     document.querySelector(`#${selectedUserId}`).classList.add('active');
+    // } else {
+    //     messageForm.classList.add('hidden');
+    // }
 
     // const notifiedUser = document.querySelector(`#${message.senderId}`);
     // if (notifiedUser && !notifiedUser.classList.contains('active')) {
@@ -206,3 +205,15 @@ function onError() {
 }
 
 btnSendMessage.addEventListener('click', sendMessage);
+function formatDate(date) {
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth() + 101).toString().substring(1);
+    var day = (date.getDate() + 100).toString().substring(1);
+    return month + '/' + day + '/' + year;
+}
+function formatTime(date) {
+    var hours = date.getHours().toString();
+    var minutes = date.getMinutes().toString();
+    var seconds = date.getSeconds().toString();
+    return hours + ':' + minutes + ':' + seconds;
+}
