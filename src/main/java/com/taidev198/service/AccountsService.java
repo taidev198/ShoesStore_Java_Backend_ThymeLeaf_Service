@@ -15,4 +15,6 @@ public interface AccountsService {
     Account findAccountByEmail(String email);
 
     List<Optional<Account>> findAllById(Integer senderId);
+
+    Account save(Account account);
 }
