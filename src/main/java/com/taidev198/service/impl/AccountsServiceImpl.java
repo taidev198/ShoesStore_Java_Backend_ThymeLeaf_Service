@@ -72,4 +72,9 @@ public class AccountsServiceImpl implements AccountsService {
                 return chatMessage1.get(chatMessage1.size() -1).getTimestamp().after(chatMessage.get(chatMessage.size() -1).getTimestamp()) ? 1 : -1;
             })).toList();
     }
+
+    @Override
+    public Account save(Account account) {
+       return accountRepository.save(account);
+    }
 }

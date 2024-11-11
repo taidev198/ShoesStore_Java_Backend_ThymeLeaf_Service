@@ -4,6 +4,11 @@ const btnSendMessage = document.querySelector('#btnSendMessage');
 const messageInput = document.querySelector('#message-input');
 const contactBar = document.querySelector('#contactsSidebar');
 const userId = document.querySelector('#userid');
+const client_form = document.querySelector('#client_form');
+const client_email = document.querySelector('#client_email');
+const client_phone = document.querySelector('#client_sdt');
+const client_send = document.querySelector('#client_send');
+const chatWindowMain = document.querySelector('#chat-window-main');
 let selectedUserId =null
 let subscription = null;
 let subscriptionMess = null;
@@ -13,11 +18,24 @@ stompClient = Stomp.over(socket);
 stompClient.connect({}, onConnected, onError);
 let clientId = localStorage.getItem('username') || uuidv4();
 localStorage.setItem('username', clientId);
-// event.preventDefault();
-const uID = userId == null ? clientId : userId.textContent;
-contactBar.classList.add('hidden');
+let uID = userId == null ? clientId : userId.textContent;
 console.log(userId)
 console.log(uID)
+
+function isClient(user) {
+    if (!user) {
+        client_form.removeAttribute('hidden')
+        console.log('client')
+    }else {
+        console.log('user')
+        chatWindowMain.classList.remove('hidden');
+        chatWindowMain.removeAttribute('hidden');
+        contactBar.classList.add('hidden');
+        uID = user.id;
+        subscription = stompClient.subscribe(`/user/${uID}/queue/messages`, onMessageReceived);
+    }
+
+}
 //click to conversion
 function userItemClick(event) {
     //remove active user
@@ -44,7 +62,6 @@ function userItemClick(event) {
 
 }
 function onConnected() {
-    subscription = stompClient.subscribe(`/user/${uID}/queue/messages`, onMessageReceived);
     subscriptionMess = stompClient.subscribe(`/user/public`, onMessageReceived);
     findAndDisplayConversions().then();
 }
@@ -204,16 +221,22 @@ function onError() {
 
 }
 
+function startClientConversation() {
+    // chatWindowMain.classList.remove('hidden');
+    // client_form.classList.add('hidden');
+    // register the connected user
+    if (client_email.value && client_phone.value.length) {
+        // console.log(client_email.value);
+        // console.log(client_phone.value);
+        // stompClient.send("/app/user.addUser",
+        //     {},
+        //     JSON.stringify({email: client_email.value, phoneNumber: client_phone.value, isVerified: 1, createdAt: new Date()}),
+        // );
+        chatWindowMain.classList.toggle('show');
+        chatWindowMain.removeAttribute('hidden');
+        client_form.classList.add('hidden');
+    }
+}
+
 btnSendMessage.addEventListener('click', sendMessage);
-function formatDate(date) {
-    var year = date.getFullYear().toString();
-    var month = (date.getMonth() + 101).toString().substring(1);
-    var day = (date.getDate() + 100).toString().substring(1);
-    return month + '/' + day + '/' + year;
-}
-function formatTime(date) {
-    var hours = date.getHours().toString();
-    var minutes = date.getMinutes().toString();
-    var seconds = date.getSeconds().toString();
-    return hours + ':' + minutes + ':' + seconds;
-}
+client_send.addEventListener('click', startClientConversation);
