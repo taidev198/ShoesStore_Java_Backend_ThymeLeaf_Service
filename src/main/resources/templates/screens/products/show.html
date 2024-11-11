@@ -12,6 +12,7 @@
     <th:block id="static-resources">
         <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
         <link rel="stylesheet" href="/assets/css/product/product-detail.css">
+        <link rel="stylesheet" href="/assets/css/comment.css">
     </th:block>
 </head>
 
@@ -44,6 +45,7 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
+            <div th:replace="~{/components/comment::comment}"></div>
         </div>
         <div class="col-md-5">
             <h3 class="text-uppercase font-weight-bold">
